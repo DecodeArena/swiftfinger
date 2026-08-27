@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -8,33 +10,2531 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <meta name="theme-color" content="#061B3A">
+  <meta
+    name="theme-color"
+    content="#061B3A"
+  >
 
   <title>SwiftFinger ⚡</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+  <!-- Telegram Mini App -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, #123b72 0%, #061b3a 42%, #031226 100%);
-      color: #ffffff;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+  <!-- SwiftFinger CSS -->
+  <link
+    rel="stylesheet"
+    href="public/styles.css"
+  >
 
-    button {
-      font-family: inherit;
-      cursor: pointer;
-    }
+</head>
 
-    .app {
+
+<body>
+
+  <div class="app">
+
+    <!-- =================================
+         HEADER
+    ================================== -->
+
+    <header class="header">
+
+      <div class="brand">
+
+        <div class="logo">
+          ⚡☝️
+        </div>
+
+        <div>
+
+          <div class="brand-name">
+            SwiftFinger
+          </div>
+
+          <div class="brand-tagline">
+            Decode. React. Win.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="profile-button"
+        onclick="openScreen('profileScreen')"
+        aria-label="Profile"
+      >
+        👤
+      </button>
+
+    </header>
+
+
+
+    <main class="main">
+
+
+      <!-- =================================
+           HOME
+      ================================== -->
+
+      <section
+        id="homeScreen"
+        class="screen active"
+      >
+
+        <div class="hero">
+
+          <div class="hero-label">
+            ⚡ FAST 1v1 CHALLENGES
+          </div>
+
+          <h1>
+            Think fast.<br>
+            Climb higher.
+          </h1>
+
+          <p>
+            Challenge players, decode numbers
+            and build your winning streak.
+          </p>
+
+          <button
+            class="primary-button"
+            onclick="startMatchmaking()"
+          >
+            PLAY 1v1 ⚡
+          </button>
+
+        </div>
+
+
+        <!-- LOBBY BANNER AD -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <!-- MAIN MENU -->
+
+        <div class="menu-grid">
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('decodeScreen')"
+          >
+
+            <div class="menu-icon">
+              🔢
+            </div>
+
+            <div class="menu-title">
+              Decode Numbers
+            </div>
+
+            <div class="menu-description">
+              Find the hidden sentence
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('leaderboardScreen')"
+          >
+
+            <div class="menu-icon">
+              🏆
+            </div>
+
+            <div class="menu-title">
+              Leaderboard
+            </div>
+
+            <div class="menu-description">
+              Weekly + all-time rankings
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('profileScreen')"
+          >
+
+            <div class="menu-icon">
+              👤
+            </div>
+
+            <div class="menu-title">
+              My Profile
+            </div>
+
+            <div class="menu-description">
+              Wins, losses, streak & rating
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="showRules()"
+          >
+
+            <div class="menu-icon">
+              ℹ️
+            </div>
+
+            <div class="menu-title">
+              How It Works
+            </div>
+
+            <div class="menu-description">
+              Learn the SwiftFinger rules
+            </div>
+
+          </button>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           MATCHMAKING
+      ================================== -->
+
+      <section
+        id="matchmakingScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="matchmaking">
+
+          <div class="match-logo">
+            ⚡☝️
+          </div>
+
+          <h2>
+            Finding an opponent
+          </h2>
+
+          <p>
+            Shuffling the lobby…
+          </p>
+
+          <div class="loader"></div>
+
+
+          <button
+            class="primary-button"
+            onclick="openScreen('homeScreen')"
+          >
+            CANCEL
+          </button>
+
+        </div>
+
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           ACTIVE 1v1 MATCH
+      ================================== -->
+
+      <section
+        id="matchScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Leave Match
+        </button>
+
+
+        <div class="opponent-bar">
+
+          <div>
+
+            <small
+              style="
+                color:#8199b9;
+                font-size:9px;
+              "
+            >
+              OPPONENT
+            </small>
+
+            <div
+              id="opponentName"
+              class="opponent-name"
+            >
+              SwiftFinger Player
+            </div>
+
+          </div>
+
+
+          <div class="attempt-counter">
+
+            <strong id="attempts">
+              5
+            </strong>
+
+            <span>
+              attempts
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="gameAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Type your answer"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitAttempt()"
+          >
+            SUBMIT ⚡
+          </button>
+
+
+          <div
+            id="gameFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+
+        <div
+          style="
+            text-align:center;
+            color:#617b9f;
+            font-size:10px;
+            margin-top:14px;
+          "
+        >
+          🚫 No ads cover active gameplay.
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           DECODE NUMBERS
+      ================================== -->
+
+      <section
+        id="decodeScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          DAILY CHALLENGE
+        </div>
+
+
+        <h2 class="page-title">
+          Decode Numbers
+        </h2>
+
+
+        <!-- DECODE PAGE BANNER -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="decodeAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Enter decoded sentence"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitDecode()"
+          >
+            SUBMIT ANSWER
+          </button>
+
+
+          <div
+            id="decodeFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           LEADERBOARD
+      ================================== -->
+
+      <section
+        id="leaderboardScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          RANKINGS
+        </div>
+
+
+        <h2 class="page-title">
+          Leaderboard
+        </h2>
+
+
+        <div class="tabs">
+
+          <button
+            class="tab active"
+            onclick="changeBoard(this)"
+          >
+            Weekly
+          </button>
+
+
+          <button
+            class="tab"
+            onclick="changeBoard(this)"
+          >
+            All-time
+          </button>
+
+        </div>
+
+
+        <div id="leaderboard">
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              1
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Champion
+              </strong>
+
+              <small>
+                @champion
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              12 wins
+
+              <small>
+                1250 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              2
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Lightning
+              </strong>
+
+              <small>
+                @lightning
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              10 wins
+
+              <small>
+                1205 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              3
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Player
+              </strong>
+
+              <small>
+                @swift
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              8 wins
+
+              <small>
+                1170 rating
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           PROFILE
+      ================================== -->
+
+      <section
+        id="profileScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="profile-card">
+
+          <div class="avatar">
+            ⚡
+          </div>
+
+
+          <h2>
+            SwiftFinger Player
+          </h2>
+
+
+          <div class="username">
+            @player
+          </div>
+
+
+          <div class="stats">
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Wins
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Losses
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Win Streak
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                1000
+              </strong>
+
+              <span>
+                Rating
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER ANNOUNCEMENT POPUP
+  ====================================== -->
+
+  <div
+    id="announcementPopup"
+    class="popup hidden"
+  >
+
+    <div
+      class="popup-background"
+      onclick="closeAnnouncement()"
+    ></div>
+
+
+    <div class="popup-card">
+
+      <button
+        class="close-popup"
+        onclick="closeAnnouncement()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <div class="trophy">
+        🏆
+      </div>
+
+
+      <div class="popup-label">
+        SWIFTFINGER IS GROWING!
+      </div>
+
+
+      <h2>
+        We're just getting started!
+      </h2>
+
+
+      <div class="popup-text">
+
+        As our community grows, we're committed
+        to increasing the number of weekly winners
+        from the Top 3 to eventually the Top 100
+        players.
+
+      </div>
+
+
+      <div class="growth">
+
+        <div class="growth-box">
+
+          <span>
+            NOW
+          </span>
+
+          <strong id="popupCurrentWinners">
+            Top 3
+          </strong>
+
+        </div>
+
+
+        <div class="growth-arrow">
+          →
+        </div>
+
+
+        <div class="growth-box">
+
+          <span>
+            TARGET
+          </span>
+
+          <strong id="popupFutureWinners">
+            Top 100
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="prize-box">
+
+        💰
+
+        <strong>
+          Bigger prizes are coming too!
+        </strong>
+
+        <br>
+
+        As SwiftFinger grows, we plan to increase
+        the prize pool and reward more players.
+
+      </div>
+
+
+      <div class="popup-text">
+
+        Keep playing. Keep climbing.
+        Your chance to win is growing!
+
+      </div>
+
+
+      <button
+        class="primary-button"
+        onclick="
+          closeAnnouncement();
+          startMatchmaking();
+        "
+      >
+        LET'S PLAY ⚡
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================
+       TOAST
+  ====================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER JAVASCRIPT
+  ====================================== -->
+
+  <script src="public/app.js"></script>
+
+</body>
+
+</html>          <div class="brand-tagline">
+            Decode. React. Win.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="profile-button"
+        onclick="openScreen('profileScreen')"
+        aria-label="Profile"
+      >
+        👤
+      </button>
+
+    </header>
+
+
+
+    <main class="main">
+
+
+      <!-- =================================
+           HOME
+      ================================== -->
+
+      <section
+        id="homeScreen"
+        class="screen active"
+      >
+
+        <div class="hero">
+
+          <div class="hero-label">
+            ⚡ FAST 1v1 CHALLENGES
+          </div>
+
+          <h1>
+            Think fast.<br>
+            Climb higher.
+          </h1>
+
+          <p>
+            Challenge players, decode numbers
+            and build your winning streak.
+          </p>
+
+          <button
+            class="primary-button"
+            onclick="startMatchmaking()"
+          >
+            PLAY 1v1 ⚡
+          </button>
+
+        </div>
+
+
+        <!-- LOBBY BANNER AD -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <!-- MAIN MENU -->
+
+        <div class="menu-grid">
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('decodeScreen')"
+          >
+
+            <div class="menu-icon">
+              🔢
+            </div>
+
+            <div class="menu-title">
+              Decode Numbers
+            </div>
+
+            <div class="menu-description">
+              Find the hidden sentence
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('leaderboardScreen')"
+          >
+
+            <div class="menu-icon">
+              🏆
+            </div>
+
+            <div class="menu-title">
+              Leaderboard
+            </div>
+
+            <div class="menu-description">
+              Weekly + all-time rankings
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('profileScreen')"
+          >
+
+            <div class="menu-icon">
+              👤
+            </div>
+
+            <div class="menu-title">
+              My Profile
+            </div>
+
+            <div class="menu-description">
+              Wins, losses, streak & rating
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="showRules()"
+          >
+
+            <div class="menu-icon">
+              ℹ️
+            </div>
+
+            <div class="menu-title">
+              How It Works
+            </div>
+
+            <div class="menu-description">
+              Learn the SwiftFinger rules
+            </div>
+
+          </button>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           MATCHMAKING
+      ================================== -->
+
+      <section
+        id="matchmakingScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="matchmaking">
+
+          <div class="match-logo">
+            ⚡☝️
+          </div>
+
+          <h2>
+            Finding an opponent
+          </h2>
+
+          <p>
+            Shuffling the lobby…
+          </p>
+
+          <div class="loader"></div>
+
+
+          <button
+            class="primary-button"
+            onclick="openScreen('homeScreen')"
+          >
+            CANCEL
+          </button>
+
+        </div>
+
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           ACTIVE 1v1 MATCH
+      ================================== -->
+
+      <section
+        id="matchScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Leave Match
+        </button>
+
+
+        <div class="opponent-bar">
+
+          <div>
+
+            <small
+              style="
+                color:#8199b9;
+                font-size:9px;
+              "
+            >
+              OPPONENT
+            </small>
+
+            <div
+              id="opponentName"
+              class="opponent-name"
+            >
+              SwiftFinger Player
+            </div>
+
+          </div>
+
+
+          <div class="attempt-counter">
+
+            <strong id="attempts">
+              5
+            </strong>
+
+            <span>
+              attempts
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="gameAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Type your answer"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitAttempt()"
+          >
+            SUBMIT ⚡
+          </button>
+
+
+          <div
+            id="gameFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+
+        <div
+          style="
+            text-align:center;
+            color:#617b9f;
+            font-size:10px;
+            margin-top:14px;
+          "
+        >
+          🚫 No ads cover active gameplay.
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           DECODE NUMBERS
+      ================================== -->
+
+      <section
+        id="decodeScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          DAILY CHALLENGE
+        </div>
+
+
+        <h2 class="page-title">
+          Decode Numbers
+        </h2>
+
+
+        <!-- DECODE PAGE BANNER -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="decodeAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Enter decoded sentence"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitDecode()"
+          >
+            SUBMIT ANSWER
+          </button>
+
+
+          <div
+            id="decodeFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           LEADERBOARD
+      ================================== -->
+
+      <section
+        id="leaderboardScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          RANKINGS
+        </div>
+
+
+        <h2 class="page-title">
+          Leaderboard
+        </h2>
+
+
+        <div class="tabs">
+
+          <button
+            class="tab active"
+            onclick="changeBoard(this)"
+          >
+            Weekly
+          </button>
+
+
+          <button
+            class="tab"
+            onclick="changeBoard(this)"
+          >
+            All-time
+          </button>
+
+        </div>
+
+
+        <div id="leaderboard">
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              1
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Champion
+              </strong>
+
+              <small>
+                @champion
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              12 wins
+
+              <small>
+                1250 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              2
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Lightning
+              </strong>
+
+              <small>
+                @lightning
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              10 wins
+
+              <small>
+                1205 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              3
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Player
+              </strong>
+
+              <small>
+                @swift
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              8 wins
+
+              <small>
+                1170 rating
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           PROFILE
+      ================================== -->
+
+      <section
+        id="profileScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="profile-card">
+
+          <div class="avatar">
+            ⚡
+          </div>
+
+
+          <h2>
+            SwiftFinger Player
+          </h2>
+
+
+          <div class="username">
+            @player
+          </div>
+
+
+          <div class="stats">
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Wins
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Losses
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Win Streak
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                1000
+              </strong>
+
+              <span>
+                Rating
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER ANNOUNCEMENT POPUP
+  ====================================== -->
+
+  <div
+    id="announcementPopup"
+    class="popup hidden"
+  >
+
+    <div
+      class="popup-background"
+      onclick="closeAnnouncement()"
+    ></div>
+
+
+    <div class="popup-card">
+
+      <button
+        class="close-popup"
+        onclick="closeAnnouncement()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <div class="trophy">
+        🏆
+      </div>
+
+
+      <div class="popup-label">
+        SWIFTFINGER IS GROWING!
+      </div>
+
+
+      <h2>
+        We're just getting started!
+      </h2>
+
+
+      <div class="popup-text">
+
+        As our community grows, we're committed
+        to increasing the number of weekly winners
+        from the Top 3 to eventually the Top 100
+        players.
+
+      </div>
+
+
+      <div class="growth">
+
+        <div class="growth-box">
+
+          <span>
+            NOW
+          </span>
+
+          <strong id="popupCurrentWinners">
+            Top 3
+          </strong>
+
+        </div>
+
+
+        <div class="growth-arrow">
+          →
+        </div>
+
+
+        <div class="growth-box">
+
+          <span>
+            TARGET
+          </span>
+
+          <strong id="popupFutureWinners">
+            Top 100
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="prize-box">
+
+        💰
+
+        <strong>
+          Bigger prizes are coming too!
+        </strong>
+
+        <br>
+
+        As SwiftFinger grows, we plan to increase
+        the prize pool and reward more players.
+
+      </div>
+
+
+      <div class="popup-text">
+
+        Keep playing. Keep climbing.
+        Your chance to win is growing!
+
+      </div>
+
+
+      <button
+        class="primary-button"
+        onclick="
+          closeAnnouncement();
+          startMatchmaking();
+        "
+      >
+        LET'S PLAY ⚡
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================
+       TOAST
+  ====================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER JAVASCRIPT
+  ====================================== -->
+
+  <script src="public/app.js"></script>
+
+</body>
+
+            </html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <meta
+    name="theme-color"
+    content="#061B3A"
+  >
+
+  <title>SwiftFinger ⚡</title>
+
+  <!-- Telegram Mini App -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- SwiftFinger CSS -->
+  <link
+    rel="stylesheet"
+    href="public/styles.css"
+  >
+
+</head>
+
+
+<body>
+
+  <div class="app">
+
+    <!-- =================================
+         HEADER
+    ================================== -->
+
+    <header class="header">
+
+      <div class="brand">
+
+        <div class="logo">
+          ⚡☝️
+        </div>
+
+        <div>
+
+          <div class="brand-name">
+            SwiftFinger
+          </div>
+
+          <div class="brand-tagline">
+            Decode. React. Win.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="profile-button"
+        onclick="openScreen('profileScreen')"
+        aria-label="Profile"
+      >
+        👤
+      </button>
+
+    </header>
+
+
+
+    <main class="main">
+
+
+      <!-- =================================
+           HOME
+      ================================== -->
+
+      <section
+        id="homeScreen"
+        class="screen active"
+      >
+
+        <div class="hero">
+
+          <div class="hero-label">
+            ⚡ FAST 1v1 CHALLENGES
+          </div>
+
+          <h1>
+            Think fast.<br>
+            Climb higher.
+          </h1>
+
+          <p>
+            Challenge players, decode numbers
+            and build your winning streak.
+          </p>
+
+          <button
+            class="primary-button"
+            onclick="startMatchmaking()"
+          >
+            PLAY 1v1 ⚡
+          </button>
+
+        </div>
+
+
+        <!-- LOBBY BANNER AD -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <!-- MAIN MENU -->
+
+        <div class="menu-grid">
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('decodeScreen')"
+          >
+
+            <div class="menu-icon">
+              🔢
+            </div>
+
+            <div class="menu-title">
+              Decode Numbers
+            </div>
+
+            <div class="menu-description">
+              Find the hidden sentence
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('leaderboardScreen')"
+          >
+
+            <div class="menu-icon">
+              🏆
+            </div>
+
+            <div class="menu-title">
+              Leaderboard
+            </div>
+
+            <div class="menu-description">
+              Weekly + all-time rankings
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="openScreen('profileScreen')"
+          >
+
+            <div class="menu-icon">
+              👤
+            </div>
+
+            <div class="menu-title">
+              My Profile
+            </div>
+
+            <div class="menu-description">
+              Wins, losses, streak & rating
+            </div>
+
+          </button>
+
+
+
+          <button
+            class="menu-card"
+            onclick="showRules()"
+          >
+
+            <div class="menu-icon">
+              ℹ️
+            </div>
+
+            <div class="menu-title">
+              How It Works
+            </div>
+
+            <div class="menu-description">
+              Learn the SwiftFinger rules
+            </div>
+
+          </button>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           MATCHMAKING
+      ================================== -->
+
+      <section
+        id="matchmakingScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="matchmaking">
+
+          <div class="match-logo">
+            ⚡☝️
+          </div>
+
+          <h2>
+            Finding an opponent
+          </h2>
+
+          <p>
+            Shuffling the lobby…
+          </p>
+
+          <div class="loader"></div>
+
+
+          <button
+            class="primary-button"
+            onclick="openScreen('homeScreen')"
+          >
+            CANCEL
+          </button>
+
+        </div>
+
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           ACTIVE 1v1 MATCH
+      ================================== -->
+
+      <section
+        id="matchScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Leave Match
+        </button>
+
+
+        <div class="opponent-bar">
+
+          <div>
+
+            <small
+              style="
+                color:#8199b9;
+                font-size:9px;
+              "
+            >
+              OPPONENT
+            </small>
+
+            <div
+              id="opponentName"
+              class="opponent-name"
+            >
+              SwiftFinger Player
+            </div>
+
+          </div>
+
+
+          <div class="attempt-counter">
+
+            <strong id="attempts">
+              5
+            </strong>
+
+            <span>
+              attempts
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="gameAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Type your answer"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitAttempt()"
+          >
+            SUBMIT ⚡
+          </button>
+
+
+          <div
+            id="gameFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+
+        <div
+          style="
+            text-align:center;
+            color:#617b9f;
+            font-size:10px;
+            margin-top:14px;
+          "
+        >
+          🚫 No ads cover active gameplay.
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           DECODE NUMBERS
+      ================================== -->
+
+      <section
+        id="decodeScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          DAILY CHALLENGE
+        </div>
+
+
+        <h2 class="page-title">
+          Decode Numbers
+        </h2>
+
+
+        <!-- DECODE PAGE BANNER -->
+
+        <div class="ad-slot">
+          BANNER AD
+        </div>
+
+
+        <div class="game-card">
+
+          <div class="numbers">
+            4 5 3 15 9
+          </div>
+
+
+          <div class="game-clue">
+            Decode these numbers into a
+            meaningful sentence.
+          </div>
+
+
+          <input
+            id="decodeAnswer"
+            class="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Enter decoded sentence"
+          >
+
+
+          <button
+            class="primary-button"
+            style="margin-top:12px;"
+            onclick="submitDecode()"
+          >
+            SUBMIT ANSWER
+          </button>
+
+
+          <div
+            id="decodeFeedback"
+            style="
+              text-align:center;
+              margin-top:12px;
+              min-height:20px;
+              font-size:12px;
+              font-weight:bold;
+            "
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           LEADERBOARD
+      ================================== -->
+
+      <section
+        id="leaderboardScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="page-label">
+          RANKINGS
+        </div>
+
+
+        <h2 class="page-title">
+          Leaderboard
+        </h2>
+
+
+        <div class="tabs">
+
+          <button
+            class="tab active"
+            onclick="changeBoard(this)"
+          >
+            Weekly
+          </button>
+
+
+          <button
+            class="tab"
+            onclick="changeBoard(this)"
+          >
+            All-time
+          </button>
+
+        </div>
+
+
+        <div id="leaderboard">
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              1
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Champion
+              </strong>
+
+              <small>
+                @champion
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              12 wins
+
+              <small>
+                1250 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              2
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Lightning
+              </strong>
+
+              <small>
+                @lightning
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              10 wins
+
+              <small>
+                1205 rating
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="leaderboard-row">
+
+            <div class="rank">
+              3
+            </div>
+
+
+            <div class="player-info">
+
+              <strong>
+                Swift Player
+              </strong>
+
+              <small>
+                @swift
+              </small>
+
+            </div>
+
+
+            <div class="player-score">
+
+              8 wins
+
+              <small>
+                1170 rating
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           PROFILE
+      ================================== -->
+
+      <section
+        id="profileScreen"
+        class="screen"
+      >
+
+        <button
+          class="back-button"
+          onclick="openScreen('homeScreen')"
+        >
+          ← Back
+        </button>
+
+
+        <div class="profile-card">
+
+          <div class="avatar">
+            ⚡
+          </div>
+
+
+          <h2>
+            SwiftFinger Player
+          </h2>
+
+
+          <div class="username">
+            @player
+          </div>
+
+
+          <div class="stats">
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Wins
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Losses
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                0
+              </strong>
+
+              <span>
+                Win Streak
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <strong>
+                1000
+              </strong>
+
+              <span>
+                Rating
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER ANNOUNCEMENT POPUP
+  ====================================== -->
+
+  <div
+    id="announcementPopup"
+    class="popup hidden"
+  >
+
+    <div
+      class="popup-background"
+      onclick="closeAnnouncement()"
+    ></div>
+
+
+    <div class="popup-card">
+
+      <button
+        class="close-popup"
+        onclick="closeAnnouncement()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <div class="trophy">
+        🏆
+      </div>
+
+
+      <div class="popup-label">
+        SWIFTFINGER IS GROWING!
+      </div>
+
+
+      <h2>
+        We're just getting started!
+      </h2>
+
+
+      <div class="popup-text">
+
+        As our community grows, we're committed
+        to increasing the number of weekly winners
+        from the Top 3 to eventually the Top 100
+        players.
+
+      </div>
+
+
+      <div class="growth">
+
+        <div class="growth-box">
+
+          <span>
+            NOW
+          </span>
+
+          <strong id="popupCurrentWinners">
+            Top 3
+          </strong>
+
+        </div>
+
+
+        <div class="growth-arrow">
+          →
+        </div>
+
+
+        <div class="growth-box">
+
+          <span>
+            TARGET
+          </span>
+
+          <strong id="popupFutureWinners">
+            Top 100
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="prize-box">
+
+        💰
+
+        <strong>
+          Bigger prizes are coming too!
+        </strong>
+
+        <br>
+
+        As SwiftFinger grows, we plan to increase
+        the prize pool and reward more players.
+
+      </div>
+
+
+      <div class="popup-text">
+
+        Keep playing. Keep climbing.
+        Your chance to win is growing!
+
+      </div>
+
+
+      <button
+        class="primary-button"
+        onclick="
+          closeAnnouncement();
+          startMatchmaking();
+        "
+      >
+        LET'S PLAY ⚡
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================
+       TOAST
+  ====================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+
+  <!-- =====================================
+       SWIFTFINGER JAVASCRIPT
+  ====================================== -->
+
+  <script src="public/app.js"></script>
+
+</body>
+
+          </html>    .app {
       width: 100%;
       max-width: 480px;
       margin: auto;
