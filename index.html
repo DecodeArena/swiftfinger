@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <meta name="theme-color" content="#061B3A">
+
+  <title>SwiftFinger ⚡</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #123b72 0%, #061b3a 42%, #031226 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: linear-gradient(
+        145deg,
+        #7b4dff,
+        #168cff
+      );
+
+      font-size: 25px;
+
+      box-shadow:
+        0 0 20px rgba(50,150,255,.35);
+    }
+
+    .brand-name {
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      color: #9eb5d5;
+      margin-top: 3px;
+    }
+
+    .profile-button {
+      width: 43px;
+      height: 43px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      color: white;
+      font-size: 21px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      padding: 5px 16px 30px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      margin-top: 8px;
+      padding: 25px 20px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(19,61,113,.95),
+          rgba(7,29,61,.98)
+        );
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.25);
+    }
+
+    .hero-label {
+      color: #55baff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      line-height: 1.05;
+      margin-bottom: 13px;
+    }
+
+    .hero p {
+      color: #a9bdd8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .primary-button {
+      width: 100%;
+      min-height: 54px;
+
+      border: 0;
+      border-radius: 16px;
+
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+
+      background:
+        linear-gradient(
+          100deg,
+          #704cff,
+          #168cff
+        );
+
+      box-shadow:
+        0 10px 30px rgba(30,140,255,.25);
+
+      transition: transform .15s;
+    }
+
+    .primary-button:active {
+      transform: scale(.97);
+    }
+
+    /* =========================
+       AD SLOT
+    ========================= */
+
+    .ad-slot {
+      height: 55px;
+      margin: 15px 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      border: 1px dashed rgba(255,255,255,.14);
+
+      color: #6681a9;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+    }
+
+    /* =========================
+       MENU GRID
+    ========================= */
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .menu-card {
+      min-height: 135px;
+
+      text-align: left;
+
+      padding: 17px;
+
+      border-radius: 19px;
+
+      border: 1px solid rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.055);
+
+      color: white;
+
+      transition:
+        transform .15s,
+        background .15s;
+    }
+
+    .menu-card:active {
+      transform: scale(.97);
+    }
+
+    .menu-icon {
+      font-size: 27px;
+      margin-bottom: 15px;
+    }
+
+    .menu-title {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .menu-description {
+      color: #8fa7c7;
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* =========================
+       PAGE TITLE
+    ========================= */
+
+    .back-button {
+      background: none;
+      border: 0;
+      color: #a9bedb;
+      font-size: 14px;
+      margin: 10px 0 18px;
+    }
+
+    .page-label {
+      color: #55baff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.4px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      margin-top: 5px;
+      margin-bottom: 18px;
+    }
+
+    /* =========================
+       MATCHMAKING
+    ========================= */
+
+    .matchmaking {
+      text-align: center;
+      padding: 65px 15px;
+    }
+
+    .match-logo {
+      font-size: 65px;
+
+      animation:
+        pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    .matchmaking h2 {
+      margin-top: 18px;
+      font-size: 24px;
+    }
+
+    .matchmaking p {
+      color: #91a9c8;
+      margin-top: 8px;
+    }
+
+    .loader {
+      width: 45px;
+      height: 45px;
+
+      margin: 28px auto;
+
+      border-radius: 50%;
+
+      border: 4px solid rgba(255,255,255,.1);
+      border-top-color: #2da4ff;
+
+      animation:
+        spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       GAME
+    ========================= */
+
+    .opponent-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 14px;
+
+      background: rgba(255,255,255,.055);
+
+      border-radius: 16px;
+
+      margin-bottom: 14px;
+    }
+
+    .opponent-name {
+      font-weight: 900;
+    }
+
+    .attempt-counter {
+      text-align: center;
+      background: #09244b;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+
+    .attempt-counter strong {
+      display: block;
+      font-size: 19px;
+    }
+
+    .attempt-counter span {
+      color: #839bbb;
+      font-size: 9px;
+    }
+
+    .game-card {
+      padding: 20px;
+
+      border-radius: 23px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0c2e5e,
+          #071c3b
+        );
+
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .numbers {
+      background: #03152e;
+
+      border-radius: 17px;
+
+      padding: 25px 10px;
+
+      text-align: center;
+
+      font-size: 29px;
+      font-weight: 900;
+
+      letter-spacing: 4px;
+
+      margin-bottom: 15px;
+    }
+
+    .game-clue {
+      color: #a2b7d3;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .answer-input {
+      width: 100%;
+
+      border: 1px solid rgba(255,255,255,.1);
+
+      background: #061a36;
+
+      color: white;
+
+      border-radius: 14px;
+
+      padding: 16px;
+
+      outline: none;
+
+      font-size: 14px;
+    }
+
+    .answer-input:focus {
+      border-color: #2da4ff;
+    }
+
+    /* =========================
+       LEADERBOARD
+    ========================= */
+
+    .tabs {
+      display: flex;
+      gap: 5px;
+
+      padding: 4px;
+
+      background: rgba(255,255,255,.05);
+
+      border-radius: 14px;
+
+      margin-bottom: 12px;
+    }
+
+    .tab {
+      flex: 1;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #91a8c7;
+
+      padding: 11px;
+
+      border-radius: 10px;
+
+      font-weight: 800;
+    }
+
+    .tab.active {
+      background: #123467;
+      color: white;
+    }
+
+    .leaderboard-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 13px;
+
+      background: rgba(255,255,255,.05);
+
+      border-radius: 15px;
+
+      margin-bottom: 8px;
+    }
+
+    .rank {
+      width: 27px;
+
+      color: #77baff;
+
+      font-weight: 900;
+    }
+
+    .player-info {
+      flex: 1;
+    }
+
+    .player-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .player-info small {
+      color: #8199b9;
+      font-size: 10px;
+    }
+
+    .player-score {
+      text-align: right;
+      font-weight: 900;
+    }
+
+    .player-score small {
+      display: block;
+      color: #8199b9;
+      font-size: 9px;
+      margin-top: 3px;
+    }
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    .profile-card {
+      text-align: center;
+
+      padding: 28px 20px;
+
+      border-radius: 23px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0d2f61,
+          #071d3c
+        );
+
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .avatar {
+      width: 75px;
+      height: 75px;
+
+      margin: auto;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          145deg,
+          #714dff,
+          #158fff
+        );
+
+      font-size: 33px;
+    }
+
+    .profile-card h2 {
+      margin-top: 12px;
+    }
+
+    .username {
+      color: #8da5c4;
+      font-size: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 10px;
+
+      margin-top: 22px;
+    }
+
+    .stat {
+      padding: 15px;
+
+      border-radius: 15px;
+
+      background: rgba(255,255,255,.05);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 23px;
+    }
+
+    .stat span {
+      color: #8299b8;
+      font-size: 10px;
+    }
+
+    /* =========================
+       ANNOUNCEMENT POPUP
+    ========================= */
+
+    .popup {
+      position: fixed;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      z-index: 1000;
+    }
+
+    .popup.hidden {
+      display: none;
+    }
+
+    .popup-background {
+      position: absolute;
+      inset: 0;
+
+      background:
+        rgba(0,7,20,.82);
+
+      backdrop-filter:
+        blur(8px);
+    }
+
+    .popup-card {
+      position: relative;
+
+      width: 100%;
+      max-width: 450px;
+
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      padding: 27px;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #10376e,
+          #071d3d
+        );
+
+      border: 1px solid rgba(255,255,255,.12);
+
+      box-shadow:
+        0 25px 90px rgba(0,0,0,.55);
+    }
+
+    .close-popup {
+      position: absolute;
+
+      right: 13px;
+      top: 11px;
+
+      width: 36px;
+      height: 36px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,.08);
+
+      color: white;
+
+      font-size: 23px;
+    }
+
+    .trophy {
+      font-size: 43px;
+      margin-bottom: 7px;
+    }
+
+    .popup-label {
+      color: #55baff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.4px;
+    }
+
+    .popup-card h2 {
+      font-size: 25px;
+      margin-top: 8px;
+    }
+
+    .popup-text {
+      color: #a9bdd8;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    .growth {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      gap: 13px;
+
+      margin: 20px 0;
+    }
+
+    .growth-box {
+      min-width: 100px;
+
+      padding: 13px;
+
+      text-align: center;
+
+      border-radius: 15px;
+
+      background: rgba(255,255,255,.055);
+    }
+
+    .growth-box span {
+      display: block;
+
+      color: #8299b9;
+
+      font-size: 9px;
+
+      letter-spacing: 1px;
+    }
+
+    .growth-box strong {
+      display: block;
+
+      margin-top: 4px;
+
+      font-size: 18px;
+    }
+
+    .growth-arrow {
+      color: #58baff;
+      font-size: 23px;
+    }
+
+    .prize-box {
+      padding: 14px;
+
+      border-radius: 15px;
+
+      background: rgba(36,207,123,.08);
+
+      border: 1px solid rgba(36,207,123,.15);
+
+      color: #d1f7e2;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+
+      bottom: 25px;
+      left: 50%;
+
+      transform:
+        translate(-50%,20px);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      z-index: 2000;
+
+      background: #102d57;
+
+      border: 1px solid rgba(255,255,255,.1);
+
+      color: white;
+
+      padding: 11px 16px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+
+      transition: .25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translate(-50%,0);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header class="header">
+
+    <div class="brand">
+
+      <div class="logo">
+        ⚡☝️
+      </div>
+
+      <div>
+        <div class="brand-name">
+          SwiftFinger
+        </div>
+
+        <div class="brand-tagline">
+          Decode. React. Win.
+        </div>
+      </div>
+
+    </div>
+
+    <button
+      class="profile-button"
+      onclick="openScreen('profileScreen')"
+    >
+      👤
+    </button>
+
+  </header>
+
+
+  <main class="main">
+
+    <!-- =========================
+         HOME
+    ========================== -->
+
+    <section
+      id="homeScreen"
+      class="screen active"
+    >
+
+      <div class="hero">
+
+        <div class="hero-label">
+          ⚡ FAST 1v1 CHALLENGES
+        </div>
+
+        <h1>
+          Think fast.<br>
+          Climb higher.
+        </h1>
+
+        <p>
+          Challenge players, decode numbers
+          and build your winning streak.
+        </p>
+
+        <button
+          class="primary-button"
+          onclick="startMatchmaking()"
+        >
+          PLAY 1v1 ⚡
+        </button>
+
+      </div>
+
+
+      <!-- BANNER AD -->
+
+      <div class="ad-slot">
+        BANNER AD
+      </div>
+
+
+      <!-- MENU -->
+
+      <div class="menu-grid">
+
+        <button
+          class="menu-card"
+          onclick="openScreen('decodeScreen')"
+        >
+
+          <div class="menu-icon">
+            🔢
+          </div>
+
+          <div class="menu-title">
+            Decode Numbers
+          </div>
+
+          <div class="menu-description">
+            Find the hidden sentence
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-card"
+          onclick="openScreen('leaderboardScreen')"
+        >
+
+          <div class="menu-icon">
+            🏆
+          </div>
+
+          <div class="menu-title">
+            Leaderboard
+          </div>
+
+          <div class="menu-description">
+            Weekly + all-time rankings
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-card"
+          onclick="openScreen('profileScreen')"
+        >
+
+          <div class="menu-icon">
+            👤
+          </div>
+
+          <div class="menu-title">
+            My Profile
+          </div>
+
+          <div class="menu-description">
+            Wins, losses, streak & rating
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-card"
+          onclick="showRules()"
+        >
+
+          <div class="menu-icon">
+            ℹ️
+          </div>
+
+          <div class="menu-title">
+            How It Works
+          </div>
+
+          <div class="menu-description">
+            Learn the game rules
+          </div>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         MATCHMAKING
+    ========================== -->
+
+    <section
+      id="matchmakingScreen"
+      class="screen"
+    >
+
+      <button
+        class="back-button"
+        onclick="openScreen('homeScreen')"
+      >
+        ← Back
+      </button>
+
+
+      <div class="matchmaking">
+
+        <div class="match-logo">
+          ⚡☝️
+        </div>
+
+        <h2>
+          Finding an opponent
+        </h2>
+
+        <p>
+          Shuffling the lobby…
+        </p>
+
+        <div class="loader"></div>
+
+        <button
+          class="primary-button"
+          onclick="openScreen('homeScreen')"
+        >
+          CANCEL
+        </button>
+
+      </div>
+
+
+      <div class="ad-slot">
+        BANNER AD
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ACTIVE MATCH
+    ========================== -->
+
+    <section
+      id="matchScreen"
+      class="screen"
+    >
+
+      <button
+        class="back-button"
+        onclick="openScreen('homeScreen')"
+      >
+        ← Leave Match
+      </button>
+
+
+      <div class="opponent-bar">
+
+        <div>
+
+          <small
+            style="color:#8199b9;font-size:9px;"
+          >
+            OPPONENT
+          </small>
+
+          <div class="opponent-name">
+            SwiftFinger Player
+          </div>
+
+        </div>
+
+
+        <div class="attempt-counter">
+
+          <strong id="attempts">
+            5
+          </strong>
+
+          <span>
+            attempts
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="game-card">
+
+        <div class="numbers">
+          4 5 3 15 9
+        </div>
+
+        <div class="game-clue">
+          Decode these numbers into a
+          meaningful sentence.
+        </div>
+
+        <input
+          id="gameAnswer"
+          class="answer-input"
+          type="text"
+          placeholder="Type your answer"
+        >
+
+        <button
+          class="primary-button"
+          style="margin-top:12px;"
+          onclick="submitAttempt()"
+        >
+          SUBMIT ⚡
+        </button>
+
+        <div
+          id="gameFeedback"
+          style="
+            text-align:center;
+            margin-top:12px;
+            min-height:20px;
+            font-size:12px;
+            font-weight:bold;
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        style="
+          text-align:center;
+          color:#617b9f;
+          font-size:10px;
+          margin-top:14px;
+        "
+      >
+        🚫 No ads cover active gameplay.
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         DECODE NUMBERS
+    ========================== -->
+
+    <section
+      id="decodeScreen"
+      class="screen"
+    >
+
+      <button
+        class="back-button"
+        onclick="openScreen('homeScreen')"
+      >
+        ← Back
+      </button>
+
+      <div class="page-label">
+        DAILY CHALLENGE
+      </div>
+
+      <h2 class="page-title">
+        Decode Numbers
+      </h2>
+
+
+      <div class="ad-slot">
+        BANNER AD
+      </div>
+
+
+      <div class="game-card">
+
+        <div class="numbers">
+          4 5 3 15 9
+        </div>
+
+        <div class="game-clue">
+          Decode these numbers into a
+          meaningful sentence.
+        </div>
+
+        <input
+          id="decodeAnswer"
+          class="answer-input"
+          placeholder="Enter decoded sentence"
+        >
+
+        <button
+          class="primary-button"
+          style="margin-top:12px;"
+          onclick="submitDecode()"
+        >
+          SUBMIT ANSWER
+        </button>
+
+        <div
+          id="decodeFeedback"
+          style="
+            text-align:center;
+            margin-top:12px;
+            min-height:20px;
+            font-size:12px;
+            font-weight:bold;
+          "
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         LEADERBOARD
+    ========================== -->
+
+    <section
+      id="leaderboardScreen"
+      class="screen"
+    >
+
+      <button
+        class="back-button"
+        onclick="openScreen('homeScreen')"
+      >
+        ← Back
+      </button>
+
+      <div class="page-label">
+        RANKINGS
+      </div>
+
+      <h2 class="page-title">
+        Leaderboard
+      </h2>
+
+
+      <div class="tabs">
+
+        <button
+          class="tab active"
+          onclick="changeBoard(this)"
+        >
+          Weekly
+        </button>
+
+        <button
+          class="tab"
+          onclick="changeBoard(this)"
+        >
+          All-time
+        </button>
+
+    
