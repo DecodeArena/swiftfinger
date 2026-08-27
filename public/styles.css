@@ -1,0 +1,880 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(
+      circle at top,
+      #123b72 0%,
+      #061b3a 42%,
+      #031226 100%
+    );
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================
+   APP CONTAINER
+========================= */
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  margin: auto;
+  padding-bottom: 30px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7b4dff,
+      #168cff
+    );
+
+  font-size: 25px;
+
+  box-shadow:
+    0 0 20px rgba(50, 150, 255, .35);
+}
+
+.brand-name {
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.brand-tagline {
+  margin-top: 3px;
+  color: #9eb5d5;
+  font-size: 11px;
+}
+
+.profile-button {
+  width: 43px;
+  height: 43px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, .08);
+  color: #ffffff;
+
+  font-size: 21px;
+}
+
+/* =========================
+   MAIN / SCREENS
+========================= */
+
+.main {
+  padding: 5px 16px 30px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  margin-top: 8px;
+  padding: 25px 20px;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 61, 113, .95),
+      rgba(7, 29, 61, .98)
+    );
+
+  border: 1px solid rgba(255, 255, 255, .08);
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, .25);
+}
+
+.hero-label {
+  margin-bottom: 12px;
+
+  color: #55baff;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.hero h1 {
+  margin-bottom: 13px;
+
+  font-size: 40px;
+  line-height: 1.05;
+}
+
+.hero p {
+  margin-bottom: 20px;
+
+  color: #a9bdd8;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================
+   PRIMARY BUTTON
+========================= */
+
+.primary-button {
+  width: 100%;
+  min-height: 54px;
+
+  border: 0;
+  border-radius: 16px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      100deg,
+      #704cff,
+      #168cff
+    );
+
+  box-shadow:
+    0 10px 30px rgba(30, 140, 255, .25);
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
+
+.primary-button:active {
+  transform: scale(.97);
+}
+
+.primary-button:hover {
+  opacity: .92;
+}
+
+/* =========================
+   AD SLOT
+========================= */
+
+.ad-slot {
+  height: 55px;
+
+  margin: 15px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed rgba(255, 255, 255, .14);
+  border-radius: 13px;
+
+  color: #6681a9;
+
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+/* =========================
+   MENU GRID
+========================= */
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.menu-card {
+  min-height: 135px;
+
+  padding: 17px;
+
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 19px;
+
+  background: rgba(255, 255, 255, .055);
+
+  color: #ffffff;
+
+  text-align: left;
+
+  transition:
+    transform .15s ease,
+    background .15s ease;
+}
+
+.menu-card:active {
+  transform: scale(.97);
+}
+
+.menu-card:hover {
+  background: rgba(255, 255, 255, .08);
+}
+
+.menu-icon {
+  margin-bottom: 15px;
+  font-size: 27px;
+}
+
+.menu-title {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.menu-description {
+  margin-top: 6px;
+
+  color: #8fa7c7;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================
+   PAGE HEADERS
+========================= */
+
+.back-button {
+  margin: 10px 0 18px;
+
+  border: 0;
+
+  background: none;
+
+  color: #a9bedb;
+
+  font-size: 14px;
+}
+
+.page-label {
+  color: #55baff;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.page-title {
+  margin-top: 5px;
+  margin-bottom: 18px;
+
+  font-size: 28px;
+}
+
+/* =========================
+   MATCHMAKING
+========================= */
+
+.matchmaking {
+  padding: 65px 15px;
+
+  text-align: center;
+}
+
+.match-logo {
+  font-size: 65px;
+
+  animation:
+    pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.matchmaking h2 {
+  margin-top: 18px;
+  font-size: 24px;
+}
+
+.matchmaking p {
+  margin-top: 8px;
+  color: #91a9c8;
+}
+
+.loader {
+  width: 45px;
+  height: 45px;
+
+  margin: 28px auto;
+
+  border: 4px solid rgba(255, 255, 255, .1);
+  border-top-color: #2da4ff;
+  border-radius: 50%;
+
+  animation:
+    spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   ACTIVE GAME
+========================= */
+
+.opponent-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+  padding: 14px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, .055);
+}
+
+.opponent-name {
+  font-weight: 900;
+}
+
+.attempt-counter {
+  padding: 8px 12px;
+
+  border-radius: 12px;
+
+  background: #09244b;
+
+  text-align: center;
+}
+
+.attempt-counter strong {
+  display: block;
+  font-size: 19px;
+}
+
+.attempt-counter span {
+  color: #839bbb;
+  font-size: 9px;
+}
+
+.game-card {
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0c2e5e,
+      #071c3b
+    );
+}
+
+.numbers {
+  margin-bottom: 15px;
+  padding: 25px 10px;
+
+  border-radius: 17px;
+
+  background: #03152e;
+
+  text-align: center;
+
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.game-clue {
+  margin-bottom: 15px;
+
+  color: #a2b7d3;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.answer-input {
+  width: 100%;
+
+  padding: 16px;
+
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px;
+
+  outline: none;
+
+  background: #061a36;
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+.answer-input::placeholder {
+  color: #607b9e;
+}
+
+.answer-input:focus {
+  border-color: #2da4ff;
+}
+
+/* =========================
+   LEADERBOARD
+========================= */
+
+.tabs {
+  display: flex;
+  gap: 5px;
+
+  margin-bottom: 12px;
+  padding: 4px;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, .05);
+}
+
+.tab {
+  flex: 1;
+
+  padding: 11px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #91a8c7;
+
+  font-weight: 800;
+}
+
+.tab.active {
+  background: #123467;
+  color: #ffffff;
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 8px;
+  padding: 13px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, .05);
+}
+
+.rank {
+  width: 27px;
+
+  color: #77baff;
+
+  font-weight: 900;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-info strong {
+  display: block;
+  font-size: 13px;
+}
+
+.player-info small {
+  color: #8199b9;
+  font-size: 10px;
+}
+
+.player-score {
+  text-align: right;
+  font-weight: 900;
+}
+
+.player-score small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8199b9;
+
+  font-size: 9px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+  padding: 28px 20px;
+
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0d2f61,
+      #071d3c
+    );
+
+  text-align: center;
+}
+
+.avatar {
+  width: 75px;
+  height: 75px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: auto;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #714dff,
+      #158fff
+    );
+
+  font-size: 33px;
+}
+
+.profile-card h2 {
+  margin-top: 12px;
+}
+
+.username {
+  color: #8da5c4;
+  font-size: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.stat {
+  padding: 15px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, .05);
+}
+
+.stat strong {
+  display: block;
+  font-size: 23px;
+}
+
+.stat span {
+  color: #8299b8;
+  font-size: 10px;
+}
+
+/* =========================
+   ANNOUNCEMENT POPUP
+========================= */
+
+.popup {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-background {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 7, 20, .82);
+
+  backdrop-filter: blur(8px);
+}
+
+.popup-card {
+  position: relative;
+
+  width: 100%;
+  max-width: 450px;
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  padding: 27px;
+
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #10376e,
+      #071d3d
+    );
+
+  box-shadow:
+    0 25px 90px rgba(0, 0, 0, .55);
+}
+
+.close-popup {
+  position: absolute;
+
+  top: 11px;
+  right: 13px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, .08);
+
+  color: #ffffff;
+
+  font-size: 23px;
+}
+
+.trophy {
+  margin-bottom: 7px;
+  font-size: 43px;
+}
+
+.popup-label {
+  color: #55baff;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.popup-card h2 {
+  margin-top: 8px;
+  font-size: 25px;
+}
+
+.popup-text {
+  margin-top: 10px;
+
+  color: #a9bdd8;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.growth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  margin: 20px 0;
+}
+
+.growth-box {
+  min-width: 100px;
+
+  padding: 13px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, .055);
+
+  text-align: center;
+}
+
+.growth-box span {
+  display: block;
+
+  color: #8299b9;
+
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.growth-box strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 18px;
+}
+
+.growth-arrow {
+  color: #58baff;
+  font-size: 23px;
+}
+
+.prize-box {
+  padding: 14px;
+
+  border: 1px solid rgba(36, 207, 123, .15);
+  border-radius: 15px;
+
+  background: rgba(36, 207, 123, .08);
+
+  color: #d1f7e2;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 25px;
+
+  z-index: 2000;
+
+  padding: 11px 16px;
+
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 12px;
+
+  background: #102d57;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translate(-50%, 20px);
+
+  transition: .25s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 360px) {
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .menu-card {
+    min-height: 125px;
+    padding: 14px;
+  }
+
+  .numbers {
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+
+  .growth {
+    gap: 7px;
+  }
+
+  .growth-box {
+    min-width: 85px;
+  }
+
+}
+
+/* =========================
+   SAFE AREA
+========================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+  .app {
+    padding-bottom:
+      calc(30px + env(safe-area-inset-bottom));
+  }
+
+    }
