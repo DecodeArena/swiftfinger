@@ -2,39 +2,1074 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
 
 <title>SwiftFinger ⚡</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-:root {
-    --bg: #050b18;
-    --bg2: #08152a;
-    --card: #0d1d35;
-    --card2: #112744;
-    --blue: #2389ff;
-    --cyan: #20d9ff;
-    --green: #25e58b;
-    --yellow: #ffc83d;
-    --red: #ff5571;
-    --text: #ffffff;
-    --muted: #8da3bd;
-    --border: rgba(255,255,255,.08);
-}
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html,
+body {
+    width: 100%;
     min-height: 100%;
-    background: var(--bg);
-    color: var(--text);
+    background: #050b18;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    padding-bottom: 90px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #050b18;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.loading-box {
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+}
+
+.loading-logo {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    background: linear-gradient(145deg,#7b4dff,#168cff);
+    box-shadow: 0 0 35px rgba(50,150,255,.35);
+}
+
+.loading-title {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.loading-status {
+    color: #8fa7c7;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    margin: 22px auto;
+    border: 3px solid rgba(255,255,255,.15);
+    border-top-color: #55baff;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
+
+.loading-error {
+    display: none;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255,70,90,.10);
+    border: 1px solid rgba(255,70,90,.35);
+    color: #ff9ca8;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.continue-btn {
+    display: none;
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: 0;
+    border-radius: 14px;
+    color: white;
+    font-weight: 800;
+    background: linear-gradient(135deg,#7b4dff,#168cff);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg,#7b4dff,#168cff);
+    font-size: 25px;
+    box-shadow: 0 0 20px rgba(50,150,255,.35);
+}
+
+.brand-name {
+    font-size: 21px;
+    font-weight: 900;
+}
+
+.brand-tagline {
+    font-size: 10px;
+    color: #9eb5d5;
+    margin-top: 3px;
+}
+
+.profile-button {
+    width: 43px;
+    height: 43px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    color: white;
+    font-size: 21px;
+}
+
+/* =========================
+   PLAYER BAR
+========================= */
+
+.player-bar {
+    margin: 0 16px 12px;
+    padding: 11px 13px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #182945;
+}
+
+.player-id {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.player-name {
+    font-size: 11px;
+    color: #8da5c5;
+    margin-top: 2px;
+}
+
+.player-score {
+    font-size: 13px;
+    font-weight: 900;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    padding: 5px 16px 30px;
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    margin-top: 8px;
+    padding: 25px 20px;
+    border-radius: 25px;
+    background: linear-gradient(
+        145deg,
+        rgba(19,61,113,.95),
+        rgba(7,29,61,.98)
+    );
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+}
+
+.hero-label {
+    color: #55baff;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: 30px;
+    line-height: 1.05;
+    margin-top: 10px;
+}
+
+.hero p {
+    color: #a9bdd8;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 12px;
+}
+
+.hero-button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg,#7b4dff,#168cff);
+    color: white;
+    font-weight: 900;
+    box-shadow: 0 10px 25px rgba(22,140,255,.2);
+}
+
+/* =========================
+   ADS
+========================= */
+
+.ad-slot {
+    min-height: 50px;
+    margin: 14px 0;
+    border-radius: 14px;
+    background: rgba(255,255,255,.025);
+    border: 1px dashed rgba(255,255,255,.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #516580;
+    font-size: 10px;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 2px 11px;
+}
+
+.section-title h2 {
+    font-size: 17px;
+}
+
+.section-title span {
+    color: #6d88a8;
+    font-size: 11px;
+}
+
+/* =========================
+   GAME CARDS
+========================= */
+
+.game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.game-card {
+    padding: 16px;
+    border-radius: 20px;
+    background: linear-gradient(
+        145deg,
+        rgba(22,52,94,.95),
+        rgba(8,25,51,.98)
+    );
+    border: 1px solid rgba(255,255,255,.07);
+    min-height: 145px;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-icon {
+    font-size: 30px;
+}
+
+.game-card h3 {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.game-card p {
+    color: #8199b8;
+    font-size: 10px;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+.game-card button {
+    width: 100%;
+    margin-top: 11px;
+    padding: 9px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(85,186,255,.12);
+    color: #72c8ff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 9px;
+}
+
+.stat {
+    padding: 14px 8px;
+    text-align: center;
+    border-radius: 15px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.06);
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.stat-label {
+    margin-top: 4px;
+    font-size: 9px;
+    color: #7891b1;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu-list {
+    display: grid;
+    gap: 9px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.055);
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(85,186,255,.09);
+    font-size: 17px;
+}
+
+.menu-text {
+    flex: 1;
+}
+
+.menu-text strong {
+    display: block;
+    font-size: 13px;
+}
+
+.menu-text small {
+    display: block;
+    margin-top: 3px;
+    color: #7188a7;
+    font-size: 10px;
+}
+
+.menu-arrow {
+    color: #5d7595;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page-title {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 10px 0 5px;
+}
+
+.page-subtitle {
+    color: #7f97b5;
+    font-size: 12px;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   LEADERBOARD
+========================= */
+
+.leaderboard {
+    display: grid;
+    gap: 8px;
+}
+
+.rank-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.04);
+}
+
+.rank {
+    width: 28px;
+    text-align: center;
+    font-weight: 900;
+}
+
+.rank-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.rank-name {
+    flex: 1;
+}
+
+.rank-name strong {
+    display: block;
+    font-size: 12px;
+}
+
+.rank-name small {
+    color: #7189a7;
+    font-size: 9px;
+}
+
+.rank-score {
+    font-weight: 900;
+    font-size: 12px;
+}
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+.notification {
+    padding: 14px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.04);
+    margin-bottom: 8px;
+    border-left: 3px solid #55baff;
+}
+
+.notification strong {
+    font-size: 12px;
+}
+
+.notification p {
+    color: #8198b6;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-box {
+    text-align: center;
+    padding: 25px 15px;
+    border-radius: 22px;
+    background: linear-gradient(
+        145deg,
+        rgba(19,61,113,.75),
+        rgba(7,29,61,.9)
+    );
+}
+
+.profile-avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(85,186,255,.5);
+}
+
+.profile-box h2 {
+    margin-top: 12px;
+    font-size: 20px;
+}
+
+.profile-box p {
+    color: #8098b7;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+/* =========================
+   REFERRAL
+========================= */
+
+.referral-box {
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(
+        145deg,
+        rgba(73,42,120,.7),
+        rgba(12,28,62,.95)
+    );
+}
+
+.referral-box h2 {
+    font-size: 20px;
+}
+
+.referral-box p {
+    color: #a2b5cf;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.referral-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: 0;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#7b4dff,#168cff);
+    color: white;
+    font-weight: 900;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: rgba(5,11,24,.96);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255,255,255,.07);
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+
+.nav-btn {
+    border: 0;
+    background: transparent;
+    color: #607795;
+    padding: 7px 3px;
+    font-size: 9px;
+}
+
+.nav-btn div {
+    font-size: 19px;
+    margin-bottom: 3px;
+}
+
+.nav-btn.active {
+    color: #55baff;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    background: rgba(0,0,0,.72);
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    width: 100%;
+    max-width: 480px;
+    padding: 22px;
+    border-radius: 25px 25px 0 0;
+    background: #0b1830;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.modal h2 {
+    font-size: 20px;
+}
+
+.modal p {
+    color: #8299b7;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.modal-close {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    border: 0;
+    border-radius: 13px;
+    background: rgba(255,255,255,.08);
+    color: white;
+    font-weight: 800;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+    position: fixed;
+    z-index: 5000;
+    left: 50%;
+    bottom: 90px;
+    transform: translateX(-50%) translateY(20px);
+    width: calc(100% - 35px);
+    max-width: 430px;
+    padding: 13px 15px;
+    border-radius: 13px;
+    background: #132642;
+    border: 1px solid rgba(255,255,255,.08);
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOADING SCREEN
+========================= -->
+
+<div class="loading-screen" id="loadingScreen">
+
+    <div class="loading-box">
+
+        <div class="loading-logo">⚡</div>
+
+        <div class="loading-title">
+            SwiftFinger
+        </div>
+
+        <div class="spinner" id="spinner"></div>
+
+        <div class="loading-status" id="loadingStatus">
+            Connecting to Telegram...
+        </div>
+
+        <div class="loading-error" id="loadingError"></div>
+
+        <button class="continue-btn"
+                id="continueBtn"
+                onclick="continueToApp()">
+            Continue to SwiftFinger
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     APP
+========================= -->
+
+<div class="app" id="app" style="display:none;">
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">
+                ⚡
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    SWIFTFINGER
+                </div>
+
+                <div class="brand-tagline">
+                    THINK FAST • PLAY SMART • WIN BIG
+                </div>
+            </div>
+
+        </div>
+
+        <button class="profile-button"
+                onclick="showScreen('profile')">
+            👤
+        </button>
+
+    </header>
+
+
+    <div class="player-bar">
+
+        <div class="player-info">
+
+            <img class="avatar"
+                 id="topAvatar"
+                 src=""
+                 alt="">
+
+            <div>
+
+                <div class="player-id"
+                     id="topPlayerId">
+                    SF001 ✓
+                </div>
+
+                <div class="player-name"
+                     id="topPlayerName">
+                    SwiftFinger Player
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="player-score">
+            ⭐ <span id="topScore">0</span>
+        </div>
+
+    </div>
+
+
+    <main class="main">
+
+        <!-- HOME -->
+
+        <section id="homeScreen"
+                 class="screen active">
+
+            <div class="hero">
+
+                <div class="hero-label">
+                    SWIFTFINGER ⚡
+                </div>
+
+                <h1>
+                    Think Fast.<br>
+                    Win Big.
+                </h1>
+
+                <p>
+                    Challenge your reflexes, memory,
+                    logic and speed. Play smart and
+                    climb the leaderboard.
+                </p>
+
+                <button class="hero-button"
+                        onclick="showScreen('games')">
+                    ⚡ PLAY NOW
+                </button>
+
+            </div>
+
+
+            <div class="ad-slot">
+                ADVERTISEMENT
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    Featured Games
+                </h2>
+
+                <span>
+                    Play now
+                </span>
+
+            </div>
+
+
+            <div class="game-grid">
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        🔢
+                    </div>
+
+                    <h3>
+                        Decode Numbers
+                    </h3>
+
+                    <p>
+                        Decode the numbers into a
+                        meaningful sentence.
+                    </p>
+
+                    <button onclick="openGame('Decode Numbers')">
+                        PLAY
+                    </button>
+
+                </div>
+
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        ⚔️
+                    </div>
+
+                    <h3>
+                        1V1 Match
+                    </h3>
+
+                    <p>
+                        Challenge another player in
+                        a five-attempt battle.
+                    </p>
+
+                    <button onclick="openGame('1V1 Match')">
+                        PLAY
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    Your Stats
+                </h2>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat">
+                    <div class="stat-value"
+                         id="winsValue">
+                        0
+                    </div>
+                    <div class="stat-label">
+                        WINS
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-value"
+                         id="lossesValue">
+                        0
+                    </div>
+                    <div class="stat-label">
+                        LOSSES
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-value"
+                         id="ratingValue">
+                        1000
+                    </div>
+                    <div class="stat-label">
+                        RATING
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    Explore
+                </h2>
+
+            </div>
+
+
+            <div class="menu-list">
+
+                <div class="menu-item"
+                     onclick="showScreen('leaderboard')">
+
+                    <div class="menu-icon">🏆</div>
+
+                    <div class="menu-text">
+                        <strong>Leaderboard</strong>
+                        <small>See the top players</small>
+                    </div>
+
+                    <div class="menu-arrow">›</div>
+
+                </div>
+
+
+                <div class="menu-item"
+                     onclick="showScreen('profile')">
+
+                    <div class="menu-icon">👤</div>
+
+                    <div class="menu-text">
+                        <strong>Profile</strong>
+                        <small>Your SwiftFinger account</small>
+                    </div>
+
+                    <div class="menu-arrow">›</div>
+
+                </div>
+
+
+                <div class="menu-item"
+                     onclick="openReferral()">
+
+                    <div class="menu-icon">👥</div>
+
+                    <div class="menu-text">
+                        <strong>Referrals</strong>
+                        <small>Invite friends and earn rewards</small>
+                    </div>
+
+                    <div class="menu-arrow">›</div>
+
+                </div>
+
+
+                <div class="menu-item"
+                     onclick="showToast('Achievements are coming soon.')">
+
+                    <div class="menu-icon">🎖️</div>
+
+                    <div class="menu-text">
+                        <strong>Achievements</strong>
+                        <small>Unlock special achievements</small>
+                    </div>
+
+                    <div class="menu-arrow">›</div>
+
+                </div>
+
+
+                <div class="menu-item"
+                     onclick="showToast('Detailed statistics are coming soon.')">
+
+                    <div class="menu-icon">📊</div>
+
+                    <div class="menu-text">
+                        <strong>Statistics</strong>
+                        <small>Track your performance</small>
+                    </div>
+
+                    <div class="menu-arrow">›</div>
+
+                </div>
+
+
+                <div class="menu-item"
+                     onclick="showToast('Daily rewards are coming soon.')">
+
+                    <div class="menu-icon">🎁</div>
+
+                    <div class="menu-text">
+                 color: var(--text);
     font-family: Arial, Helvetica, sans-serif;
 }
 
