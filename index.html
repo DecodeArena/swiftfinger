@@ -2,635 +2,1036 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>SwiftFinger ⚡</title>
 
-<!-- Telegram Mini App SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-html,
-body{
-    width:100%;
-    min-height:100%;
-    background:#050b18;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
+body {
+    font-family: Arial, sans-serif;
+    background: #050b18;
+    color: #fff;
+    min-height: 100vh;
 }
 
-body{
-    overflow-x:hidden;
+button {
+    font-family: inherit;
 }
 
-button,
-input{
-    font-family:inherit;
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: #050b18;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
 }
 
-button{
-    cursor:pointer;
-    border:0;
+.logo {
+    font-size: 48px;
+    margin-bottom: 15px;
 }
 
-/* =========================
-   LOADING
-========================= */
-
-#loadingScreen{
-    position:fixed;
-    inset:0;
-    z-index:99999;
-    background:#050b18;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+.loadingTitle {
+    font-size: 25px;
+    font-weight: 800;
+    color: #00e5ff;
 }
 
-.loadingBox{
-    width:100%;
-    max-width:390px;
-    text-align:center;
+.loadingText {
+    margin-top: 12px;
+    color: #94a3b8;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 20px;
 }
 
-.loadingLogo{
-    width:76px;
-    height:76px;
-    margin:0 auto 18px;
-    border-radius:22px;
-    background:linear-gradient(135deg,#ffd400,#ff8700);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:40px;
-    box-shadow:0 0 35px rgba(255,200,0,.25);
+.spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #1e293b;
+    border-top-color: #00e5ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-top: 20px;
 }
 
-.loadingTitle{
-    font-size:28px;
-    font-weight:900;
-    margin-bottom:6px;
-}
-
-.loadingTagline{
-    color:#70829b;
-    font-size:10px;
-    letter-spacing:1.5px;
-    margin-bottom:30px;
-}
-
-.spinner{
-    width:42px;
-    height:42px;
-    margin:0 auto 18px;
-    border:4px solid #17243a;
-    border-top-color:#ffd400;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }
 
-#loadingStatus{
-    min-height:20px;
-    color:#b8c5d8;
-    font-size:14px;
+#app {
+    display: none;
+    min-height: 100vh;
+    padding-bottom: 80px;
 }
 
-#loadingError{
-    display:none;
-    margin-top:18px;
-    padding:14px;
-    border-radius:13px;
-    background:#27131a;
-    border:1px solid #6b3040;
-    color:#ff9dad;
-    font-size:13px;
-    line-height:1.5;
+.header {
+    padding: 18px 16px;
+    background: #081226;
+    border-bottom: 1px solid #14213d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-#continueBtn{
-    display:none;
-    margin:18px auto 0;
-    padding:13px 25px;
-    border-radius:12px;
-    background:#ffd400;
-    color:#111;
-    font-weight:900;
+.brand {
+    font-size: 22px;
+    font-weight: 900;
+    color: #00e5ff;
 }
 
-/* =========================
-   APP
-========================= */
-
-#app{
-    display:none;
-    width:100%;
-    max-width:480px;
-    min-height:100vh;
-    margin:auto;
-    padding-bottom:90px;
+.tagline {
+    font-size: 9px;
+    color: #64748b;
+    margin-top: 3px;
+    letter-spacing: .5px;
 }
 
-/* HEADER */
-
-.header{
-    padding:18px 17px 10px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.playerBox {
+    text-align: right;
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.playerId {
+    font-size: 12px;
+    color: #00e5ff;
+    font-weight: bold;
 }
 
-.brandIcon{
-    width:44px;
-    height:44px;
-    border-radius:13px;
-    background:linear-gradient(135deg,#ffd400,#ff8500);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
+.score {
+    font-size: 12px;
+    color: #facc15;
+    margin-top: 3px;
 }
 
-.brandName{
-    font-size:18px;
-    font-weight:900;
+.container {
+    padding: 18px 15px;
+    max-width: 700px;
+    margin: auto;
 }
 
-.brandTag{
-    color:#6e8099;
-    font-size:8px;
-    letter-spacing:1px;
-    margin-top:3px;
+.hero {
+    background: linear-gradient(135deg, #0b1f3a, #081226);
+    border: 1px solid #16345c;
+    border-radius: 18px;
+    padding: 25px 18px;
+    text-align: center;
+    margin-bottom: 18px;
 }
 
-.playerBox{
-    text-align:right;
+.hero h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
 }
 
-.playerId{
-    color:#ffd400;
-    font-size:12px;
-    font-weight:900;
+.hero p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-.playerScore{
-    color:#8a9ab0;
-    font-size:11px;
-    margin-top:3px;
+.sectionTitle {
+    font-size: 17px;
+    margin: 20px 0 12px;
 }
 
-/* HERO */
-
-.hero{
-    margin:12px 16px 20px;
-    padding:24px 20px;
-    border-radius:22px;
-    background:linear-gradient(145deg,#0b2141,#071326);
-    border:1px solid #183453;
+.gameGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
-.heroSmall{
-    color:#ffd400;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1px;
-    margin-bottom:9px;
+.gameCard {
+    background: #0b162a;
+    border: 1px solid #172943;
+    border-radius: 15px;
+    padding: 18px 12px;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.hero h1{
-    font-size:30px;
-    line-height:1.05;
-    margin-bottom:10px;
+.gameCard:active {
+    transform: scale(.97);
 }
 
-.hero p{
-    color:#8b9db5;
-    font-size:13px;
-    line-height:1.5;
+.gameIcon {
+    font-size: 30px;
+    margin-bottom: 8px;
 }
 
-/* SECTIONS */
-
-.sectionTitle{
-    padding:0 18px;
-    margin:20px 0 12px;
-    font-size:16px;
-    font-weight:900;
+.gameName {
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* FEATURE CARDS */
-
-.cards{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    padding:0 16px;
+.gameDescription {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 5px;
 }
 
-.card{
-    min-height:155px;
-    padding:17px;
-    border-radius:18px;
-    background:#0a1629;
-    border:1px solid #172a44;
+.feature {
+    background: #0b162a;
+    border: 1px solid #172943;
+    border-radius: 15px;
+    padding: 18px;
+    margin-bottom: 12px;
+    cursor: pointer;
 }
 
-.cardIcon{
-    font-size:27px;
-    margin-bottom:11px;
+.feature h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
 }
 
-.card h3{
-    font-size:14px;
-    margin-bottom:6px;
+.feature p {
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.4;
 }
 
-.card p{
-    color:#71839c;
-    font-size:11px;
-    line-height:1.4;
+.primaryBtn {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: 15px;
+    background: #00d9ff;
+    color: #001018;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 15px;
 }
 
-.playBtn{
-    width:100%;
-    margin-top:12px;
-    padding:10px;
-    border-radius:10px;
-    background:#ffd400;
-    color:#111;
-    font-size:10px;
-    font-weight:900;
+.primaryBtn:active {
+    transform: scale(.98);
 }
 
-/* MODES */
-
-.modes{
-    padding:0 16px;
+.bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 68px;
+    background: #071020;
+    border-top: 1px solid #14213d;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
 }
 
-.mode{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:9px;
-    padding:13px;
-    border-radius:14px;
-    background:#0a1629;
-    border:1px solid #172a44;
+.navBtn {
+    background: none;
+    border: 0;
+    color: #64748b;
+    font-size: 11px;
+    cursor: pointer;
 }
 
-.modeLeft{
-    display:flex;
-    align-items:center;
-    gap:11px;
+.navBtn span {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 3px;
 }
 
-.modeIcon{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:#101f35;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:19px;
+.navBtn.active {
+    color: #00e5ff;
 }
 
-.modeName{
-    font-size:13px;
-    font-weight:900;
+#toast {
+    position: fixed;
+    bottom: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #172033;
+    border: 1px solid #2b3c5b;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: none;
+    z-index: 5000;
+    white-space: nowrap;
 }
 
-.modeDesc{
-    margin-top:3px;
-    color:#71839c;
-    font-size:10px;
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 4000;
+    padding: 20px;
 }
 
-.modePlay{
-    padding:8px 12px;
-    border-radius:9px;
-    background:#132640;
-    color:#ffd400;
-    font-size:10px;
-    font-weight:900;
+.modalBox {
+    width: 100%;
+    max-width: 420px;
+    background: #0b162a;
+    border: 1px solid #1d3557;
+    border-radius: 18px;
+    padding: 22px;
 }
 
-/* NOTICE */
-
-.notice{
-    margin:16px;
-    padding:14px;
-    border-radius:14px;
-    background:#0a1629;
-    border:1px solid #172a44;
-    color:#8293aa;
-    font-size:12px;
-    line-height:1.5;
+.modalBox h2 {
+    margin-bottom: 10px;
 }
 
-/* BOTTOM NAV */
-
-.bottomNav{
-    position:fixed;
-    left:50%;
-    bottom:0;
-    transform:translateX(-50%);
-    width:100%;
-    max-width:480px;
-    padding:9px 7px 12px;
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    background:#07101f;
-    border-top:1px solid #15263d;
-    z-index:500;
+.modalBox p {
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
 }
 
-.navBtn{
-    background:none;
-    color:#60728a;
-    font-size:9px;
-    text-align:center;
-}
-
-.navIcon{
-    display:block;
-    font-size:19px;
-    margin-bottom:3px;
-}
-
-.navBtn.active{
-    color:#ffd400;
-}
-
-/* MODAL */
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:3000;
-    align-items:flex-end;
-    justify-content:center;
-    background:rgba(0,0,0,.78);
-}
-
-.modalBox{
-    width:100%;
-    max-width:480px;
-    max-height:85vh;
-    overflow:auto;
-    padding:20px;
-    border-radius:22px 22px 0 0;
-    background:#0a1629;
-    border:1px solid #1a3452;
-}
-
-.modalTop{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
-}
-
-.closeBtn{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    background:#14243a;
-    color:#fff;
-}
-
-.gameQuestion{
-    padding:24px 15px;
-    margin-bottom:14px;
-    border-radius:16px;
-    background:#071326;
-    text-align:center;
-}
-
-.gameQuestion h2{
-    font-size:24px;
-    margin-bottom:7px;
-}
-
-.gameQuestion p{
-    color:#8293aa;
-    font-size:12px;
-    line-height:1.5;
-}
-
-.answerInput{
-    width:100%;
-    padding:14px;
-    margin-bottom:10px;
-    border-radius:12px;
-    border:1px solid #223b5b;
-    outline:none;
-    background:#071326;
-    color:#fff;
-}
-
-.fullBtn{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    background:#ffd400;
-    color:#111;
-    font-weight:900;
+.closeBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: 1px solid #263957;
+    border-radius: 10px;
+    background: #101d33;
+    color: #fff;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     LOADING SCREEN
-===================================================== -->
-
+<!-- LOADING -->
 <div id="loadingScreen">
-
-    <div class="loadingBox">
-
-        <div class="loadingLogo">
-            ⚡
-        </div>
-
-        <div class="loadingTitle">
-            SWIFTFINGER
-        </div>
-
-        <div class="loadingTagline">
-            THINK FAST • PLAY SMART • WIN BIG
-        </div>
-
-        <div class="spinner" id="spinner"></div>
-
-        <div id="loadingStatus">
-            Starting SwiftFinger...
-        </div>
-
-        <div id="loadingError"></div>
-
-        <button id="continueBtn">
-            CONTINUE
-        </button>
-
+    <div class="logo">⚡</div>
+    <div class="loadingTitle">SWIFTFINGER</div>
+    <div class="loadingText" id="loadingText">
+        Connecting...
     </div>
-
+    <div class="spinner"></div>
 </div>
 
-
-<!-- =====================================================
-     MAIN APP
-===================================================== -->
-
+<!-- APP -->
 <div id="app">
 
     <header class="header">
-
-        <div class="brand">
-
-            <div class="brandIcon">
-                ⚡
-            </div>
-
-            <div>
-
-                <div class="brandName">
-                    SWIFTFINGER
-                </div>
-
-                <div class="brandTag">
-                    THINK FAST • PLAY SMART • WIN BIG
-                </div>
-
-            </div>
-
+        <div>
+            <div class="brand">⚡ SWIFTFINGER</div>
+            <div class="tagline">THINK FAST • PLAY SMART • WIN BIG</div>
         </div>
-
 
         <div class="playerBox">
-
-            <div
-                class="playerId"
-                id="playerId">
-                SF---
-            </div>
-
-            <div class="playerScore">
-                ⭐
-                <span id="playerScore">
-                    0
-                </span>
-            </div>
-
+            <div class="playerId" id="playerId">SF---</div>
+            <div class="score" id="playerScore">★ 0</div>
         </div>
-
     </header>
 
+    <main class="container">
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="heroSmall">
-            ⚡ DAILY CHALLENGE
-        </div>
-
-        <h1>
-            Think Fast.<br>
-            Win Big.
-        </h1>
-
-        <p>
-            Test your speed, memory and thinking skills.
-            Challenge other players and climb the leaderboard.
-        </p>
-
-    </section>
-
-
-    <!-- FEATURED -->
-
-    <div class="sectionTitle">
-        Featured Games
-    </div>
-
-
-    <div class="cards">
-
-        <div class="card">
-
-            <div class="cardIcon">
-                🔢
-            </div>
-
-            <h3>
-                Decode Numbers
-            </h3>
-
+        <section class="hero">
+            <h1>Think Fast. Win Big. ⚡</h1>
             <p>
-                Decode the hidden sentence before everyone else.
+                Challenge your mind, compete against other players
+                and climb the SwiftFinger leaderboard.
             </p>
+        </section>
 
-            <button
-                class="playBtn"
-                onclick="openGame('Decode Numbers')">
-                PLAY NOW
-            </button>
+        <div class="sectionTitle">Featured Games</div>
 
-        </div>
-
-
-        <div class="card">
-
-            <div class="cardIcon">
-                ⚔️
-            </div>
-
-            <h3>
-                1V1 Match
-            </h3>
-
+        <div class="feature" onclick="startGame('fastest_finger')">
+            <h3>⚡ Fastest Finger</h3>
             <p>
-                Challenge another player in a five-attempt battle.
+                The original SwiftFinger 5-attempt challenge.
+                Think quickly and beat your opponent.
             </p>
-
-            <button
-                class="playBtn"
-                onclick="openMatch()">
+            <button class="primaryBtn" onclick="event.stopPropagation(); startGame('fastest_finger')">
                 FIND OPPONENT
             </button>
-
         </div>
 
+        <div class="feature" onclick="startGame('word_sprint')">
+            <h3>🔤 Word Sprint</h3>
+            <p>
+                Create the fastest valid 4–6 letter word
+                from the given letters.
+            </p>
+        </div>
+
+        <div class="sectionTitle">All Game Modes</div>
+
+        <div class="gameGrid" id="gameGrid"></div>
+
+    </main>
+
+    <nav class="bottomNav">
+
+        <button class="navBtn active" onclick="showToast('Home')">
+            <span>🏠</span>
+            Home
+        </button>
+
+        <button class="navBtn" onclick="showToast('Leaderboard coming soon')">
+            <span>🏆</span>
+            Rankings
+        </button>
+
+        <button class="navBtn" onclick="showToast('Matches coming soon')">
+            <span>⚔️</span>
+            Matches
+        </button>
+
+        <button class="navBtn" onclick="showToast('Profile')">
+            <span>👤</span>
+            Profile
+        </button>
+
+    </nav>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modalBox">
+        <h2 id="modalTitle">SwiftFinger</h2>
+        <p id="modalText"></p>
+        <button class="closeBtn" onclick="closeModal()">CLOSE</button>
     </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* ================================
+   SWIFTFINGER CONFIGURATION
+================================ */
+
+const CONFIG = {
+    supabaseUrl:
+        "https://skceglrwxcdkyktbzmnq.supabase.co",
+
+    telegramAuthUrl:
+        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth"
+};
 
 
-    <!-- GAME MODES -->
+/* ================================
+   TELEGRAM
+================================ */
 
-    <div class="sectionTitle">
+let tg = null;
+let telegramUser = null;
+let currentPlayer = null;
+
+function initTelegram() {
+
+    try {
+
+        tg = window.Telegram && window.Telegram.WebApp
+            ? window.Telegram.WebApp
+            : null;
+
+        if (tg) {
+
+            tg.ready();
+            tg.expand();
+
+            try {
+                tg.setHeaderColor("#050b18");
+                tg.setBackgroundColor("#050b18");
+            } catch (e) {}
+
+            telegramUser = tg.initDataUnsafe &&
+                           tg.initDataUnsafe.user
+                ? tg.initDataUnsafe.user
+                : null;
+
+            return true;
+        }
+
+        return false;
+
+    } catch (error) {
+
+        console.log("Telegram initialization error:", error);
+        return false;
+    }
+}
+
+
+/* ================================
+   LOADING
+================================ */
+
+function setLoading(text) {
+
+    const el = document.getElementById("loadingText");
+
+    if (el) {
+        el.textContent = text;
+    }
+}
+
+
+function showApp() {
+
+    document.getElementById("loadingScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+}
+
+
+/* ================================
+   SUPABASE AUTH
+================================ */
+
+async function authenticateTelegram() {
+
+    /*
+       Normal Chrome does not have Telegram initData.
+       In that case we simply open the app.
+
+       Inside Telegram, the real initData is sent
+       to the existing telegram-auth Edge Function.
+    */
+
+    if (!tg || !tg.initData) {
+
+        console.log("No Telegram initData detected.");
+
+        return null;
+    }
+
+    try {
+
+        setLoading("Authenticating...");
+
+        const response = await fetch(
+            CONFIG.telegramAuthUrl,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    initData: tg.initData
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Telegram authentication:", data);
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.error || "Telegram authentication failed"
+            );
+        }
+
+        return data;
+
+    } catch (error) {
+
+        console.error("Authentication error:", error);
+
+        return null;
+    }
+}
+
+
+/* ================================
+   PLAYER
+================================ */
+
+function createDemoPlayer() {
+
+    return {
+        id: null,
+        telegram_id: null,
+        telegram_username: "Guest",
+        first_name: "Guest",
+        wins: 0,
+        losses: 0,
+        rating: 1000
+    };
+}
+
+
+function displayPlayer(player) {
+
+    if (!player) {
+        player = createDemoPlayer();
+    }
+
+    currentPlayer = player;
+
+    const playerId = document.getElementById("playerId");
+    const score = document.getElementById("playerScore");
+
+    if (playerId) {
+
+        if (player.id) {
+            playerId.textContent = "SF" +
+                String(player.id).padStart(3, "0") +
+                " ✓";
+        } else {
+            playerId.textContent = "GUEST";
+        }
+    }
+
+    if (score) {
+
+        score.textContent =
+            "★ " + (player.rating || 1000);
+    }
+}
+
+
+/* ================================
+   GAME MODES
+================================ */
+
+const fallbackModes = [
+
+    {
+        mode_key: "fastest_finger",
+        name: "Fastest Finger",
+        description: "The original 5-attempt challenge.",
+        icon: "⚡"
+    },
+
+    {
+        mode_key: "word_sprint",
+        name: "Word Sprint",
+        description: "Make the fastest valid word.",
+        icon: "🔤"
+    },
+
+    {
+        mode_key: "rock_paper_scissors",
+        name: "Rock Paper Scissors",
+        description: "Choose your move quickly.",
+        icon: "✊"
+    },
+
+    {
+        mode_key: "chess",
+        name: "Chess",
+        description: "Outsmart your opponent.",
+        icon: "♟️"
+    },
+
+    {
+        mode_key: "maze_race",
+        name: "Maze Race",
+        description: "Race through the maze.",
+        icon: "🌀"
+    },
+
+    {
+        mode_key: "memory_match",
+        name: "Memory Match",
+        description: "Remember and match.",
+        icon: "🧠"
+    },
+
+    {
+        mode_key: "number_rush",
+        name: "Number Rush",
+        description: "Solve numbers quickly.",
+        icon: "🔢"
+    },
+
+    {
+        mode_key: "spot_difference",
+        name: "Spot the Difference",
+        description: "Find what changed.",
+        icon: "🔎"
+    },
+
+    {
+        mode_key: "target_tap",
+        name: "Target Tap",
+        description: "Tap the target first.",
+        icon: "🎯"
+    },
+
+    {
+        mode_key: "pattern_rush",
+        name: "Pattern Rush",
+        description: "Remember the pattern.",
+        icon: "🧩"
+    },
+
+    {
+        mode_key: "odd_one_out",
+        name: "Odd One Out",
+        description: "Find the different item.",
+        icon: "👀"
+    },
+
+    {
+        mode_key: "word_scramble",
+        name: "Word Scramble",
+        description: "Unscramble the word.",
+        icon: "🔀"
+    }
+
+];
+
+
+async function loadGameModes() {
+
+    try {
+
+        const response = await fetch(
+            CONFIG.supabaseUrl +
+            "/rest/v1/rpc/get_game_modes",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: "{}"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Game modes request failed");
+        }
+
+        const modes = await response.json();
+
+        if (Array.isArray(modes) && modes.length > 0) {
+
+            renderModes(modes);
+
+        } else {
+
+            renderModes(fallbackModes);
+        }
+
+    } catch (error) {
+
+        console.log("Using fallback game modes:", error);
+
+        renderModes(fallbackModes);
+    }
+}
+
+
+function renderModes(modes) {
+
+    const grid = document.getElementById("gameGrid");
+
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    modes.forEach(function(mode) {
+
+        const card = document.createElement("div");
+
+        card.className = "gameCard";
+
+        card.onclick = function() {
+            startGame(mode.mode_key);
+        };
+
+        const icon =
+            mode.icon ||
+            getGameIcon(mode.mode_key);
+
+        card.innerHTML =
+            '<div class="gameIcon">' +
+                icon +
+            '</div>' +
+
+            '<div class="gameName">' +
+                escapeHtml(mode.name || mode.mode_key) +
+            '</div>' +
+
+            '<div class="gameDescription">' +
+                escapeHtml(
+                    mode.description || "5 attempts"
+                ) +
+            '</div>';
+
+        grid.appendChild(card);
+    });
+}
+
+
+function getGameIcon(key) {
+
+    const icons = {
+
+        fastest_finger: "⚡",
+        word_sprint: "🔤",
+        rock_paper_scissors: "✊",
+        chess: "♟️",
+        maze_race: "🌀",
+        memory_match: "🧠",
+        number_rush: "🔢",
+        spot_the_difference: "🔎",
+        target_tap: "🎯",
+        pattern_rush: "🧩",
+        odd_one_out: "👀",
+        word_scramble: "🔀"
+    };
+
+    return icons[key] || "🎮";
+}
+
+
+/* ================================
+   START GAME
+================================ */
+
+function startGame(mode) {
+
+    const modeName = mode
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, function(c) {
+            return c.toUpperCase();
+        });
+
+    openModal(
+        modeName,
+        "The " +
+        modeName +
+        " 1v1 game is being prepared. " +
+        "All matches use 5 attempts and regular SwiftFinger scoring."
+    );
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+function openModal(title, text) {
+
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalText").textContent = text;
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+function closeModal() {
+
+    document.getElementById("modal").style.display = "none";
+}
+
+
+/* ================================
+   TOAST
+================================ */
+
+function showToast(message) {
+
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.style.display = "block";
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(function() {
+
+        toast.style.display = "none";
+
+    }, 2500);
+}
+
+
+/* ================================
+   SECURITY HELPERS
+================================ */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ================================
+   START APPLICATION
+================================ */
+
+async function initializeApp() {
+
+    try {
+
+        setLoading("Starting SwiftFinger...");
+
+        /*
+           Initialize Telegram.
+        */
+
+        initTelegram();
+
+        /*
+           Authenticate only when opened
+           inside Telegram.
+        */
+
+        if (tg && tg.initData) {
+
+            const authResult =
+                await authenticateTelegram();
+
+            /*
+               If authentication succeeds and
+               returns a player, use it.
+            */
+
+            if (
+                authResult &&
+                authResult.player
+            ) {
+
+                displayPlayer(
+                    authResult.player
+                );
+
+            } else {
+
+                displayPlayer(
+                    telegramUser
+                        ? {
+                            first_name:
+                                telegramUser.first_name,
+                            telegram_username:
+                                telegramUser.username,
+                            rating: 1000
+                        }
+                        : null
+                );
+            }
+
+        } else {
+
+            /*
+               Chrome / normal browser.
+            */
+
+            displayPlayer(
+                telegramUser
+                    ? {
+                        first_name:
+                            telegramUser.first_name,
+                        telegram_username:
+                            telegramUser.username,
+                        rating: 1000
+                    }
+                    : createDemoPlayer()
+            );
+        }
+
+        /*
+           Load game modes.
+        */
+
+        setLoading("Loading games...");
+
+        await loadGameModes();
+
+        /*
+           Show application.
+        */
+
+        showApp();
+
+    } catch (error) {
+
+        console.error(
+            "SwiftFinger startup error:",
+            error
+        );
+
+        /*
+           Never leave the user trapped
+           on the loading screen.
+        */
+
+        displayPlayer(
+            createDemoPlayer()
+        );
+
+        renderModes(
+            fallbackModes
+        );
+
+        showApp();
+    }
+}
+
+
+/* ================================
+   GLOBAL SAFETY NET
+================================ */
+
+window.addEventListener(
+    "error",
+    function(event) {
+
+        console.error(
+            "JavaScript error:",
+            event.error || event.message
+        );
+
+        /*
+           If something fails, still open
+           the basic application.
+        */
+
+        if (
+            document.getElementById("app").style.display !==
+            "block"
+        ) {
+
+            displayPlayer(
+                createDemoPlayer()
+            );
+
+            renderModes(
+                fallbackModes
+            );
+
+            showApp();
+        }
+    }
+);
+
+
+/* ================================
+   RUN
+================================ */
+
+initializeApp();
+
+</script>
+
+</body>
+      </html> <div class="sectionTitle">
         Game Modes
     </div>
 
