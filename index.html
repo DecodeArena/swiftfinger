@@ -1,40 +1,1076 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0,user-scalable=no">
 
-  <meta charset="UTF-8">
+<title>SwiftFinger ⚡</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
+<!-- Telegram Mini App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <meta
-    name="theme-color"
-    content="#061B3A"
-  >
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
 
-  <title>SwiftFinger ⚡</title>
+:root{
+    --bg:#04152d;
+    --bg2:#071f3f;
+    --card:#0b294d;
+    --card2:#0d315b;
+    --blue:#1688ff;
+    --blue2:#45b5ff;
+    --gold:#ffc928;
+    --green:#27d17f;
+    --red:#ff5364;
+    --text:#ffffff;
+    --muted:#9bb5d0;
+    --border:rgba(255,255,255,.09);
+}
 
-  <!-- Telegram Mini App -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 50% -10%,#123c6e 0,#071e3c 35%,#04152d 75%);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:82px;
+}
 
-  <!-- SwiftFinger CSS -->
-  <link
-    rel="stylesheet"
-    href="public/styles.css"
-  >
+button{
+    font-family:inherit;
+    border:0;
+    cursor:pointer;
+}
 
+.app{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    padding:16px 15px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:linear-gradient(145deg,#0b62bb,#092a55);
+    border:1px solid rgba(69,181,255,.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+}
+
+.logo svg{
+    width:38px;
+    height:38px;
+}
+
+.brand-name{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.tagline{
+    color:#7fa6ca;
+    font-size:8px;
+    font-weight:bold;
+    letter-spacing:1.3px;
+    margin-top:3px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.player-box{
+    text-align:right;
+}
+
+.player-id{
+    font-size:11px;
+    font-weight:bold;
+}
+
+.player-score{
+    font-size:11px;
+    color:var(--gold);
+    margin-top:4px;
+}
+
+.avatar{
+    width:39px;
+    height:39px;
+    border-radius:50%;
+    background:linear-gradient(145deg,#1688ff,#08447e);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    border:2px solid rgba(255,255,255,.15);
+}
+
+.menu-btn{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:#0b294d;
+    color:#fff;
+    font-size:20px;
+}
+
+/* ================= ADS ================= */
+
+.ad-slot{
+    margin:5px 14px 13px;
+    height:55px;
+    border-radius:10px;
+    background:rgba(255,255,255,.035);
+    border:1px dashed rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#587794;
+    font-size:10px;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    margin:0 14px 14px;
+    padding:18px;
+    border-radius:18px;
+    background:
+        linear-gradient(135deg,rgba(16,91,166,.65),rgba(8,37,73,.9));
+    border:1px solid rgba(71,167,255,.2);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero:after{
+    content:"⚡";
+    position:absolute;
+    right:-5px;
+    bottom:-18px;
+    font-size:100px;
+    opacity:.06;
+}
+
+.hero h1{
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+.hero p{
+    color:#a7c0da;
+    font-size:12px;
+    line-height:1.5;
+    max-width:330px;
+}
+
+.hero-btn{
+    margin-top:13px;
+    background:linear-gradient(90deg,#1688ff,#35b4ff);
+    color:white;
+    padding:11px 18px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:12px;
+    box-shadow:0 8px 20px rgba(22,136,255,.25);
+}
+
+/* ================= FEATURE CARDS ================= */
+
+.section-title{
+    padding:0 15px 9px;
+    font-size:14px;
+    font-weight:800;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+    padding:0 14px;
+}
+
+.feature{
+    min-height:145px;
+    border-radius:17px;
+    padding:16px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0d3562,#092344);
+    transition:.18s;
+}
+
+.feature:active{
+    transform:scale(.97);
+}
+
+.feature.decode{
+    background:
+      linear-gradient(145deg,rgba(20,106,194,.95),rgba(7,40,79,.95));
+}
+
+.feature.match{
+    background:
+      linear-gradient(145deg,rgba(109,55,174,.9),rgba(38,23,79,.95));
+}
+
+.feature-icon{
+    font-size:31px;
+    margin-bottom:12px;
+}
+
+.feature h3{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.feature p{
+    color:#a9c2d9;
+    font-size:10px;
+    line-height:1.4;
+}
+
+.feature-btn{
+    position:absolute;
+    bottom:12px;
+    left:15px;
+    right:15px;
+    padding:9px;
+    border-radius:9px;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:10px;
+    font-weight:bold;
+}
+
+/* ================= MENU GRID ================= */
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    padding:0 14px;
+}
+
+.menu-item{
+    min-height:79px;
+    background:rgba(12,43,78,.82);
+    border:1px solid var(--border);
+    border-radius:13px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    color:white;
+    font-size:9px;
+    text-align:center;
+}
+
+.menu-icon{
+    font-size:21px;
+}
+
+/* ================= GROWTH ================= */
+
+.growth{
+    margin:14px;
+    padding:16px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#132f52,#0a2342);
+    border:1px solid rgba(255,201,40,.15);
+}
+
+.growth-title{
+    font-weight:900;
+    font-size:13px;
+    color:var(--gold);
+    margin-bottom:7px;
+}
+
+.growth p{
+    color:#a8bed2;
+    font-size:10px;
+    line-height:1.55;
+}
+
+.growth strong{
+    color:white;
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:70px;
+    background:rgba(3,17,35,.97);
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:center;
+    z-index:50;
+    backdrop-filter:blur(15px);
+}
+
+.bottom-inner{
+    width:100%;
+    max-width:520px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+}
+
+.nav-item{
+    color:#66829e;
+    background:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    font-size:9px;
+}
+
+.nav-item span:first-child{
+    font-size:19px;
+}
+
+.nav-item.active{
+    color:#3eafff;
+}
+
+/* ================= OVERLAY / MODALS ================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(5px);
+    z-index:100;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:520px;
+    max-height:88vh;
+    overflow:auto;
+    background:#071d38;
+    border-radius:23px 23px 0 0;
+    padding:20px 15px 30px;
+    border-top:1px solid rgba(255,255,255,.12);
+    animation:slideUp .22s ease;
+}
+
+@keyframes slideUp{
+    from{transform:translateY(100%);}
+    to{transform:translateY(0);}
+}
+
+.modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.modal-title{
+    font-size:18px;
+    font-weight:900;
+}
+
+.close{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:#123354;
+    color:#fff;
+    font-size:18px;
+}
+
+/* ================= GAME LIST ================= */
+
+.game-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.game-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px;
+    background:#0b294d;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:14px;
+}
+
+.game-icon{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    background:#123c68;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.game-info{
+    flex:1;
+}
+
+.game-info h4{
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.game-info p{
+    color:#7f9db9;
+    font-size:9px;
+}
+
+.multiplier{
+    display:inline-block;
+    margin-top:5px;
+    font-size:8px;
+    color:var(--gold);
+    font-weight:bold;
+}
+
+.play-small{
+    padding:8px 11px;
+    border-radius:8px;
+    background:#1688ff;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+}
+
+/* ================= POPUP ================= */
+
+.popup{
+    width:calc(100% - 30px);
+    max-width:430px;
+    background:linear-gradient(145deg,#0b315b,#061c36);
+    border:1px solid rgba(255,201,40,.3);
+    border-radius:20px;
+    padding:25px 20px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.popup-icon{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.popup h2{
+    font-size:19px;
+    color:var(--gold);
+    margin-bottom:10px;
+}
+
+.popup p{
+    color:#b5c9dc;
+    font-size:12px;
+    line-height:1.65;
+}
+
+.popup strong{
+    color:white;
+}
+
+.popup-btn{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border-radius:11px;
+    background:linear-gradient(90deg,#1688ff,#42b7ff);
+    color:white;
+    font-weight:900;
+}
+
+/* ================= REFERRAL ================= */
+
+.referral-box{
+    background:#0b294d;
+    border-radius:15px;
+    padding:16px;
+    margin-bottom:12px;
+}
+
+.referral-code{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.referral-code input{
+    flex:1;
+    min-width:0;
+    border:1px solid rgba(255,255,255,.1);
+    background:#061c36;
+    color:white;
+    padding:11px;
+    border-radius:9px;
+    outline:none;
+}
+
+.referral-code button{
+    padding:0 14px;
+    border-radius:9px;
+    background:#1688ff;
+    color:#fff;
+    font-weight:bold;
+}
+
+.chain{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    margin-top:14px;
+    flex-wrap:wrap;
+}
+
+.chain span{
+    background:#123b64;
+    padding:7px 9px;
+    border-radius:8px;
+    font-size:9px;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-card{
+    background:#0b294d;
+    border-radius:16px;
+    padding:18px;
+}
+
+.profile-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.big-avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:linear-gradient(145deg,#1688ff,#08447e);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+.stat{
+    background:#071f3b;
+    padding:11px 5px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:15px;
+}
+
+.stat span{
+    display:block;
+    color:#7694af;
+    font-size:8px;
+    margin-top:4px;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:88px;
+    transform:translateX(-50%) translateY(20px);
+    background:#102f50;
+    border:1px solid rgba(255,255,255,.1);
+    padding:11px 15px;
+    border-radius:10px;
+    font-size:11px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:200;
+    white-space:nowrap;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* ================= DESKTOP ================= */
+
+@media(min-width:700px){
+    body{
+        padding-bottom:90px;
+    }
+
+    .app{
+        max-width:520px;
+        border-left:1px solid rgba(255,255,255,.03);
+        border-right:1px solid rgba(255,255,255,.03);
+    }
+}
+</style>
 </head>
-
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <!-- =================================
-         HEADER
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="logo">
+            <!-- SwiftFinger lightning-finger logo -->
+            <svg viewBox="0 0 100 100" fill="none">
+                <path d="M46 82
+                         C37 82 31 76 31 68
+                         V42
+                         C31 37 34 34 38 34
+                         C42 34 45 37 45 42
+                         V54
+                         H49
+                         V25
+                         C49 20 52 17 56 17
+                         C60 17 63 20 63 25
+                         V53
+                         H67
+                         V30
+                         C67 25 70 22 74 22
+                         C78 22 81 25 81 30
+                         V58
+                         C81 72 70 82 57 82
+                         Z"
+                      fill="#fff"/>
+
+                <path d="M48 7
+                         L38 32
+                         H51
+                         L43 49
+                         L65 22
+                         H52
+                         L60 7
+                         Z"
+                      fill="#FFC928"/>
+            </svg>
+        </div>
+
+        <div>
+            <div class="brand-name">SWIFTFINGER</div>
+            <div class="tagline">THINK FAST • PLAY SMART • WIN BIG</div>
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <div class="player-box">
+            <div class="player-id" id="playerId">SF001 ✓</div>
+            <div class="player-score">★ <span id="headerScore">1250</span></div>
+        </div>
+
+        <div class="avatar">👤</div>
+
+        <button class="menu-btn" onclick="openMenu()">☰</button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= TOP AD ================= -->
+
+<div class="ad-slot">
+    AD SPACE
+</div>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <h1>Think Fast. Win Big. ⚡</h1>
+
+    <p>
+        Challenge players, decode numbers, climb the leaderboard
+        and compete for weekly rewards.
+    </p>
+
+    <button class="hero-btn" onclick="openGames()">
+        PLAY NOW ⚡
+    </button>
+
+</section>
+
+
+<!-- ================= FEATURE ================= -->
+
+<div class="section-title">
+    Featured Games
+</div>
+
+<div class="feature-grid">
+
+    <div class="feature decode">
+
+        <div class="feature-icon">🔢</div>
+
+        <h3>Decode Numbers</h3>
+
+        <p>
+            Decode the hidden numbers into meaningful sentences
+            and compete for cash prizes.
+        </p>
+
+        <button class="feature-btn"
+                onclick="showDecode()">
+            PLAY DECODE
+        </button>
+
+    </div>
+
+
+    <div class="feature match">
+
+        <div class="feature-icon">⚔️</div>
+
+        <h3>1V1 MATCH</h3>
+
+        <p>
+            Challenge another player across multiple
+            fast competitive games.
+        </p>
+
+        <button class="feature-btn"
+                onclick="openGames()">
+            FIND OPPONENT
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MENU ================= -->
+
+<div class="section-title" style="margin-top:17px;">
+    Explore
+</div>
+
+<div class="menu-grid">
+
+    <button class="menu-item"
+            onclick="showLeaderboard()">
+        <span class="menu-icon">🏆</span>
+        Leaderboard
+    </button>
+
+    <button class="menu-item"
+            onclick="showProfile()">
+        <span class="menu-icon">👤</span>
+        Profile
+    </button>
+
+    <button class="menu-item"
+            onclick="showReferral()">
+        <span class="menu-icon">👥</span>
+        Refer Friends
+    </button>
+
+    <button class="menu-item"
+            onclick="toast('Achievements coming soon')">
+        <span class="menu-icon">🎖️</span>
+        Achievements
+    </button>
+
+    <button class="menu-item"
+            onclick="toast('Statistics loading...')">
+        <span class="menu-icon">📊</span>
+        Statistics
+    </button>
+
+    <button class="menu-item"
+            onclick="toast('Daily reward feature')">
+        <span class="menu-icon">🎁</span>
+        Daily Rewards
+    </button>
+
+    <button class="menu-item"
+            onclick="toast('Bonus section')">
+        <span class="menu-icon">💰</span>
+        Bonus
+    </button>
+
+    <button class="menu-item"
+            onclick="showHowToPlay()">
+        <span class="menu-icon">❓</span>
+        How to Play
+    </button>
+
+</div>
+
+
+<!-- ================= LOWER AD ================= -->
+
+<div class="ad-slot" style="margin-top:14px;">
+    AD SPACE
+</div>
+
+
+<!-- ================= GROWTH ================= -->
+
+<section class="growth">
+
+    <div class="growth-title">
+        🏆 SWIFTFINGER IS GROWING!
+    </div>
+
+    <p>
+        We're just getting started!
+        As SwiftFinger grows, we plan to increase the number
+        of weekly winners from <strong>TOP 3</strong> to eventually
+        <strong>TOP 100</strong>.
+        <br><br>
+        💰 Bigger prizes are coming too!
+        The more SwiftFinger grows, the more we plan to increase
+        the prize pool and reward more players.
+        <br><br>
+        Keep playing. Keep climbing.
+        <strong>Your chance to win is growing!</strong>
+    </p>
+
+</section>
+
+</div>
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <div class="bottom-inner">
+
+        <button class="nav-item active"
+                onclick="goHome(this)">
+            <span>⌂</span>
+            Home
+        </button>
+
+        <button class="nav-item"
+                onclick="openGames(this)">
+            <span>⚡</span>
+            Games
+        </button>
+
+        <button class="nav-item"
+                onclick="showLeaderboard(this)">
+            <span>🏆</span>
+            Leaderboard
+        </button>
+
+        <button class="nav-item"
+                onclick="showNotifications(this)">
+            <span>🔔</span>
+            Notifications
+        </button>
+
+        <button class="nav-item"
+                onclick="showProfile(this)">
+            <span>👤</span>
+            Account
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MODAL ================= -->
+
+<div class="overlay" id="overlay">
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <div class="modal-title" id="modalTitle">
+                SwiftFinger
+            </div>
+
+            <button class="close"
+                    onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= GROWTH POPUP ================= -->
+
+<div class="overlay"
+     id="growthPopup"
+     style="align-items:center;">
+
+    <div class="popup">
+
+        <div class="popup-icon">🏆</div>
+
+        <h2>Exciting News!</h2>
+
+        <p>
+            As time goes on, we will
+            <strong>INCREASE</strong> the number of winners
+            from <strong>TOP 3</strong> to
+            <strong>TOP 100</strong> 🏆
+            and increase the prize money too!
+            <br><br>
+            <strong>GET READY, MORE REWARDS AHEAD! 🔥</strong>
+        </p>
+
+        <button class="popup-btn"
+                onclick="closeGrowthPopup()">
+            LET'S PLAY ⚡
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   SWIFTFINGER FRONTEND CONFIGURATION
+   ========================================================= */
+
+const SWIFTFINGER_CONFIG = {
+
+    currentWinners: 3,
+
+    futureWinners: 100,
+
+    regularPoints: 10,
+
+    chessMultiplier: 3,
+
+    mazeMultiplier: 2,
+
+    referralRewardsEnabled: true,
+
+    referralRewardPerLevel: 5,
+
+    maxReferralLevels: 10,
+
+    telegramChannel:
+        "https://t.me/your_swiftfinger_channel"
+
+};
+
+
+/* =========================================================
+   GAME MODES
+   ========================================================= */
+
+const GAME_MODES = [
+
+    {
+        icon:"⚡",
+        name:"Fastest Finger",
+        description:"Decode and answer faster than your opponent.",
+        multiplier:1,
+        rule:"5 attempts"
+    },
+
+    {
+        icon:"🔤",
+        name:"Word Sprint",
+        description:"Create the fastest valid word from the given letters.",
+        multiplier:1,
+        rule:"Fastest valid answer"
+    },
+
+    {
+        icon:"✊",
+        name:"Rock Paper Scissors",
+        description:"Battle your opponent in a fast RPS match.",
+        multiplier:1,
+        rule:"Best of 3"
+    },
+
+    {
+        icon:"♟️",
+        name:"Chess",
+        description:"Complete one         HEADER
     ================================== -->
 
     <header class="header">
