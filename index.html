@@ -1,981 +1,640 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SwiftFinger Test</title>
-</head>
+    <meta charset="UTF-8">
 
-<body style="background:#050b18;color:white;text-align:center;padding-top:100px;font-family:Arial;">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
-<h1>⚡ SwiftFinger</h1>
+    <meta
+        name="theme-color"
+        content="#050b18"
+    >
 
-<p id="status">PAGE LOADED</p>
+    <meta
+        name="description"
+        content="SwiftFinger - Think Fast, Play Smart, Win Big"
+    >
 
-<script>
-document.getElementById("status").innerHTML = "JAVASCRIPT WORKS ✅";
-</script>
+    <title>SwiftFinger</title>
 
-</body>
-</html>    margin-top: 3px;
-    letter-spacing: .5px;
-}
+    <!-- Telegram Mini App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-.playerBox {
-    text-align: right;
-}
+    <style>
 
-.playerId {
-    font-size: 12px;
-    color: #00e5ff;
-    font-weight: bold;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.score {
-    font-size: 12px;
-    color: #facc15;
-    margin-top: 3px;
-}
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
 
-.container {
-    padding: 18px 15px;
-    max-width: 700px;
-    margin: auto;
-}
+        body {
+            background: #050b18;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-bottom: 80px;
+        }
 
-.hero {
-    background: linear-gradient(135deg, #0b1f3a, #081226);
-    border: 1px solid #16345c;
-    border-radius: 18px;
-    padding: 25px 18px;
-    text-align: center;
-    margin-bottom: 18px;
-}
+        button {
+            font-family: inherit;
+        }
 
-.hero h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
+        /* ================================
+           LOADING SCREEN
+        ================================= */
 
-.hero p {
-    color: #94a3b8;
-    font-size: 14px;
-    line-height: 1.5;
-}
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: #050b18;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
 
-.sectionTitle {
-    font-size: 17px;
-    margin: 20px 0 12px;
-}
+        .loadingLogo {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(
+                135deg,
+                #00e5ff,
+                #008cff
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #001018;
+            box-shadow:
+                0 0 30px rgba(0, 229, 255, .25);
+            margin-bottom: 18px;
+        }
 
-.gameGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
+        .loadingTitle {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
 
-.gameCard {
-    background: #0b162a;
-    border: 1px solid #172943;
-    border-radius: 15px;
-    padding: 18px 12px;
-    cursor: pointer;
-    transition: .2s;
-}
+        .loadingText {
+            margin-top: 9px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
 
-.gameCard:active {
-    transform: scale(.97);
-}
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #172943;
+            border-top-color: #00e5ff;
+            border-radius: 50%;
+            margin-top: 22px;
+            animation: spin .8s linear infinite;
+        }
 
-.gameIcon {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-.gameName {
-    font-size: 14px;
-    font-weight: bold;
-}
+        /* ================================
+           APP
+        ================================= */
 
-.gameDescription {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 5px;
-}
+        #app {
+            display: none;
+            min-height: 100vh;
+        }
 
-.feature {
-    background: #0b162a;
-    border: 1px solid #172943;
-    border-radius: 15px;
-    padding: 18px;
-    margin-bottom: 12px;
-    cursor: pointer;
-}
+        /* ================================
+           HEADER
+        ================================= */
 
-.feature h3 {
-    font-size: 16px;
-    margin-bottom: 6px;
-}
+        .header {
+            min-height: 72px;
+            padding: 14px 16px;
+            background: #071020;
+            border-bottom: 1px solid #14213d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.feature p {
-    color: #94a3b8;
-    font-size: 12px;
-    line-height: 1.4;
-}
+        .brand {
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: .5px;
+        }
 
-.primaryBtn {
-    width: 100%;
-    border: 0;
-    border-radius: 12px;
-    padding: 15px;
-    background: #00d9ff;
-    color: #001018;
-    font-size: 15px;
-    font-weight: 900;
-    cursor: pointer;
-    margin-top: 15px;
-}
+        .tagline {
+            margin-top: 3px;
+            color: #64748b;
+            font-size: 9px;
+            letter-spacing: .5px;
+        }
 
-.primaryBtn:active {
-    transform: scale(.98);
-}
+        .playerBox {
+            text-align: right;
+        }
 
-.bottomNav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 68px;
-    background: #071020;
-    border-top: 1px solid #14213d;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 1000;
-}
+        .playerId {
+            font-size: 12px;
+            color: #00e5ff;
+            font-weight: bold;
+        }
 
-.navBtn {
-    background: none;
-    border: 0;
-    color: #64748b;
-    font-size: 11px;
-    cursor: pointer;
-}
+        .score {
+            font-size: 12px;
+            color: #facc15;
+            margin-top: 3px;
+        }
 
-.navBtn span {
-    display: block;
-    font-size: 22px;
-    margin-bottom: 3px;
-}
+        /* ================================
+           CONTAINER
+        ================================= */
 
-.navBtn.active {
-    color: #00e5ff;
-}
+        .container {
+            padding: 18px 15px 25px;
+            max-width: 700px;
+            margin: auto;
+        }
 
-#toast {
-    position: fixed;
-    bottom: 85px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #172033;
-    border: 1px solid #2b3c5b;
-    padding: 12px 18px;
-    border-radius: 10px;
-    font-size: 13px;
-    display: none;
-    z-index: 5000;
-    white-space: nowrap;
-}
+        /* ================================
+           HERO
+        ================================= */
 
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.75);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 4000;
-    padding: 20px;
-}
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b1f3a,
+                    #081226
+                );
+            border: 1px solid #16345c;
+            border-radius: 18px;
+            padding: 25px 18px;
+            text-align: center;
+            margin-bottom: 18px;
+        }
 
-.modalBox {
-    width: 100%;
-    max-width: 420px;
-    background: #0b162a;
-    border: 1px solid #1d3557;
-    border-radius: 18px;
-    padding: 22px;
-}
+        .heroIcon {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
 
-.modalBox h2 {
-    margin-bottom: 10px;
-}
+        .hero h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
 
-.modalBox p {
-    color: #94a3b8;
-    font-size: 13px;
-    line-height: 1.5;
-}
+        .hero p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-.closeBtn {
-    width: 100%;
-    margin-top: 15px;
-    padding: 13px;
-    border: 1px solid #263957;
-    border-radius: 10px;
-    background: #101d33;
-    color: #fff;
-    cursor: pointer;
-}
-</style>
+        /* ================================
+           SECTION TITLE
+        ================================= */
+
+        .sectionTitle {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 20px 0 12px;
+        }
+
+        /* ================================
+           FEATURE
+        ================================= */
+
+        .feature {
+            background: #0b162a;
+            border: 1px solid #172943;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .feature:active {
+            transform: scale(.985);
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* ================================
+           PRIMARY BUTTON
+        ================================= */
+
+        .primaryBtn {
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            padding: 15px;
+            background: #00d9ff;
+            color: #001018;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .primaryBtn:active {
+            transform: scale(.98);
+        }
+
+        /* ================================
+           GAME GRID
+        ================================= */
+
+        .gameGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .gameCard {
+            background: #0b162a;
+            border: 1px solid #172943;
+            border-radius: 15px;
+            padding: 18px 12px;
+            cursor: pointer;
+            transition: .2s;
+            min-height: 125px;
+        }
+
+        .gameCard:active {
+            transform: scale(.97);
+            border-color: #00e5ff;
+        }
+
+        .gameIcon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .gameName {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .gameDescription {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        /* ================================
+           NOTICE
+        ================================= */
+
+        .notice {
+            margin-top: 18px;
+            background: #081426;
+            border: 1px solid #16345c;
+            border-radius: 12px;
+            padding: 14px;
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* ================================
+           BOTTOM NAV
+        ================================= */
+
+        .bottomNav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: #071020;
+            border-top: 1px solid #14213d;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navBtn {
+            flex: 1;
+            height: 100%;
+            background: none;
+            border: 0;
+            color: #64748b;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .navBtn span {
+            display: block;
+            font-size: 21px;
+            margin-bottom: 3px;
+        }
+
+        .navBtn.active {
+            color: #00e5ff;
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        #toast {
+            position: fixed;
+            bottom: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #172033;
+            border: 1px solid #2b3c5b;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: none;
+            z-index: 5000;
+            white-space: nowrap;
+        }
+
+        /* ================================
+           MODAL
+        ================================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .78);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            padding: 20px;
+        }
+
+        .modalBox {
+            width: 100%;
+            max-width: 420px;
+            background: #0b162a;
+            border: 1px solid #1d3557;
+            border-radius: 18px;
+            padding: 22px;
+        }
+
+        .modalBox h2 {
+            margin-bottom: 10px;
+            font-size: 21px;
+        }
+
+        .modalBox p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .closeBtn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 13px;
+            border: 1px solid #263957;
+            border-radius: 10px;
+            background: #101d33;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 380px) {
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .gameGrid {
+                gap: 9px;
+            }
+
+            .gameCard {
+                padding: 15px 10px;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
+<!-- =====================================================
+     LOADING SCREEN
+===================================================== -->
+
 <div id="loadingScreen">
-    <div class="logo">⚡</div>
-    <div class="loadingTitle">SWIFTFINGER</div>
-    <div class="loadingText" id="loadingText">
-        Connecting...
+
+    <div class="loadingLogo">⚡</div>
+
+    <div class="loadingTitle">
+        SWIFTFINGER
     </div>
+
+    <div
+        class="loadingText"
+        id="loadingText"
+    >
+        Starting SwiftFinger...
+    </div>
+
     <div class="spinner"></div>
+
 </div>
 
-<!-- APP -->
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
 <div id="app">
 
+    <!-- HEADER -->
+
     <header class="header">
+
         <div>
-            <div class="brand">⚡ SWIFTFINGER</div>
-            <div class="tagline">THINK FAST • PLAY SMART • WIN BIG</div>
+
+            <div class="brand">
+                ⚡ SWIFTFINGER
+            </div>
+
+            <div class="tagline">
+                THINK FAST • PLAY SMART • WIN BIG
+            </div>
+
         </div>
 
         <div class="playerBox">
-            <div class="playerId" id="playerId">SF---</div>
-            <div class="score" id="playerScore">★ 0</div>
+
+            <div
+                class="playerId"
+                id="playerId"
+            >
+                SF---
+            </div>
+
+            <div
+                class="score"
+                id="playerScore"
+            >
+                ★ 1000
+            </div>
+
         </div>
+
     </header>
+
+
+    <!-- MAIN -->
 
     <main class="container">
 
+        <!-- HERO -->
+
         <section class="hero">
-            <h1>Think Fast. Win Big. ⚡</h1>
+
+            <div class="heroIcon">
+                ⚡
+            </div>
+
+            <h1>
+                Think Fast. Win Big.
+            </h1>
+
             <p>
-                Challenge your mind, compete against other players
-                and climb the SwiftFinger leaderboard.
+                Challenge your mind, compete against other
+                players and climb the SwiftFinger leaderboard.
             </p>
+
         </section>
 
-        <div class="sectionTitle">Featured Games</div>
 
-        <div class="feature" onclick="startGame('fastest_finger')">
-            <h3>⚡ Fastest Finger</h3>
+        <!-- FEATURED -->
+
+        <div class="sectionTitle">
+            Featured Games
+        </div>
+
+
+        <div
+            class="feature"
+            onclick="startGame('fastest_finger')"
+        >
+
+            <h3>
+                ⚡ Fastest Finger
+            </h3>
+
             <p>
                 The original SwiftFinger 5-attempt challenge.
                 Think quickly and beat your opponent.
             </p>
-            <button class="primaryBtn" onclick="event.stopPropagation(); startGame('fastest_finger')">
+
+            <button
+                class="primaryBtn"
+                onclick="event.stopPropagation(); startGame('fastest_finger')"
+            >
                 FIND OPPONENT
             </button>
+
         </div>
 
-        <div class="feature" onclick="startGame('word_sprint')">
-            <h3>🔤 Word Sprint</h3>
+
+        <div
+            class="feature"
+            onclick="startGame('word_sprint')"
+        >
+
+            <h3>
+                🔤 Word Sprint
+            </h3>
+
             <p>
                 Create the fastest valid 4–6 letter word
                 from the given letters.
             </p>
+
         </div>
 
-        <div class="sectionTitle">All Game Modes</div>
 
-        <div class="gameGrid" id="gameGrid"></div>
+        <!-- ALL GAMES -->
+
+        <div class="sectionTitle">
+            All Game Modes
+        </div>
+
+
+        <div
+            class="gameGrid"
+            id="gameGrid"
+        ></div>
+
+
+        <!-- NOTICE -->
+
+        <div class="notice">
+
+            ⚡ Every 1V1 game uses 5 attempts.
+            There are no draws — every match produces
+            a winner and a loser.
+
+        </div>
 
     </main>
 
+
+    <!-- =================================================
+         BOTTOM NAVIGATION
+    ================================================== -->
+
     <nav class="bottomNav">
 
-        <button class="navBtn active" onclick="showToast('Home')">
+        <button
+            class="navBtn active"
+            onclick="showToast('Home')"
+        >
+
             <span>🏠</span>
-            Home
-        </button>
-
-        <button class="navBtn" onclick="showToast('Leaderboard coming soon')">
-            <span>🏆</span>
-            Rankings
-        </button>
-
-        <button class="navBtn" onclick="showToast('Matches coming soon')">
-            <span>⚔️</span>
-            Matches
-        </button>
-
-        <button class="navBtn" onclick="showToast('Profile')">
-            <span>👤</span>
-            Profile
-        </button>
-
-    </nav>
-
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-    <div class="modalBox">
-        <h2 id="modalTitle">SwiftFinger</h2>
-        <p id="modalText"></p>
-        <button class="closeBtn" onclick="closeModal()">CLOSE</button>
-    </div>
-</div>
-
-<div id="toast"></div>
-
-<script>
-"use strict";
-
-/* ================================
-   SWIFTFINGER CONFIGURATION
-================================ */
-
-const CONFIG = {
-    supabaseUrl:
-        "https://skceglrwxcdkyktbzmnq.supabase.co",
-
-    telegramAuthUrl:
-        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth"
-};
-
-
-/* ================================
-   TELEGRAM
-================================ */
-
-let tg = null;
-let telegramUser = null;
-let currentPlayer = null;
-
-function initTelegram() {
-
-    try {
-
-        tg = window.Telegram && window.Telegram.WebApp
-            ? window.Telegram.WebApp
-            : null;
-
-        if (tg) {
-
-            tg.ready();
-            tg.expand();
-
-            try {
-                tg.setHeaderColor("#050b18");
-                tg.setBackgroundColor("#050b18");
-            } catch (e) {}
-
-            telegramUser = tg.initDataUnsafe &&
-                           tg.initDataUnsafe.user
-                ? tg.initDataUnsafe.user
-                : null;
-
-            return true;
-        }
-
-        return false;
-
-    } catch (error) {
-
-        console.log("Telegram initialization error:", error);
-        return false;
-    }
-}
-
-
-/* ================================
-   LOADING
-================================ */
-
-function setLoading(text) {
-
-    const el = document.getElementById("loadingText");
-
-    if (el) {
-        el.textContent = text;
-    }
-}
-
-
-function showApp() {
-
-    document.getElementById("loadingScreen").style.display = "none";
-    document.getElementById("app").style.display = "block";
-}
-
-
-/* ================================
-   SUPABASE AUTH
-================================ */
-
-async function authenticateTelegram() {
-
-    /*
-       Normal Chrome does not have Telegram initData.
-       In that case we simply open the app.
-
-       Inside Telegram, the real initData is sent
-       to the existing telegram-auth Edge Function.
-    */
-
-    if (!tg || !tg.initData) {
-
-        console.log("No Telegram initData detected.");
-
-        return null;
-    }
-
-    try {
-
-        setLoading("Authenticating...");
-
-        const response = await fetch(
-            CONFIG.telegramAuthUrl,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    initData: tg.initData
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        console.log("Telegram authentication:", data);
-
-        if (!response.ok || !data.success) {
-
-            throw new Error(
-                data.error || "Telegram authentication failed"
-            );
-        }
-
-        return data;
-
-    } catch (error) {
-
-        console.error("Authentication error:", error);
-
-        return null;
-    }
-}
-
-
-/* ================================
-   PLAYER
-================================ */
-
-function createDemoPlayer() {
-
-    return {
-        id: null,
-        telegram_id: null,
-        telegram_username: "Guest",
-        first_name: "Guest",
-        wins: 0,
-        losses: 0,
-        rating: 1000
-    };
-}
-
-
-function displayPlayer(player) {
-
-    if (!player) {
-        player = createDemoPlayer();
-    }
-
-    currentPlayer = player;
-
-    const playerId = document.getElementById("playerId");
-    const score = document.getElementById("playerScore");
-
-    if (playerId) {
-
-        if (player.id) {
-            playerId.textContent = "SF" +
-                String(player.id).padStart(3, "0") +
-                " ✓";
-        } else {
-            playerId.textContent = "GUEST";
-        }
-    }
-
-    if (score) {
-
-        score.textContent =
-            "★ " + (player.rating || 1000);
-    }
-}
-
-
-/* ================================
-   GAME MODES
-================================ */
-
-const fallbackModes = [
-
-    {
-        mode_key: "fastest_finger",
-        name: "Fastest Finger",
-        description: "The original 5-attempt challenge.",
-        icon: "⚡"
-    },
-
-    {
-        mode_key: "word_sprint",
-        name: "Word Sprint",
-        description: "Make the fastest valid word.",
-        icon: "🔤"
-    },
-
-    {
-        mode_key: "rock_paper_scissors",
-        name: "Rock Paper Scissors",
-        description: "Choose your move quickly.",
-        icon: "✊"
-    },
-
-    {
-        mode_key: "chess",
-        name: "Chess",
-        description: "Outsmart your opponent.",
-        icon: "♟️"
-    },
-
-    {
-        mode_key: "maze_race",
-        name: "Maze Race",
-        description: "Race through the maze.",
-        icon: "🌀"
-    },
-
-    {
-        mode_key: "memory_match",
-        name: "Memory Match",
-        description: "Remember and match.",
-        icon: "🧠"
-    },
-
-    {
-        mode_key: "number_rush",
-        name: "Number Rush",
-        description: "Solve numbers quickly.",
-        icon: "🔢"
-    },
-
-    {
-        mode_key: "spot_difference",
-        name: "Spot the Difference",
-        description: "Find what changed.",
-        icon: "🔎"
-    },
-
-    {
-        mode_key: "target_tap",
-        name: "Target Tap",
-        description: "Tap the target first.",
-        icon: "🎯"
-    },
-
-    {
-        mode_key: "pattern_rush",
-        name: "Pattern Rush",
-        description: "Remember the pattern.",
-        icon: "🧩"
-    },
-
-    {
-        mode_key: "odd_one_out",
-        name: "Odd One Out",
-        description: "Find the different item.",
-        icon: "👀"
-    },
-
-    {
-        mode_key: "word_scramble",
-        name: "Word Scramble",
-        description: "Unscramble the word.",
-        icon: "🔀"
-    }
-
-];
-
-
-async function loadGameModes() {
-
-    try {
-
-        const response = await fetch(
-            CONFIG.supabaseUrl +
-            "/rest/v1/rpc/get_game_modes",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: "{}"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Game modes request failed");
-        }
-
-        const modes = await response.json();
-
-        if (Array.isArray(modes) && modes.length > 0) {
-
-            renderModes(modes);
-
-        } else {
-
-            renderModes(fallbackModes);
-        }
-
-    } catch (error) {
-
-        console.log("Using fallback game modes:", error);
-
-        renderModes(fallbackModes);
-    }
-}
-
-
-function renderModes(modes) {
-
-    const grid = document.getElementById("gameGrid");
-
-    if (!grid) return;
-
-    grid.innerHTML = "";
-
-    modes.forEach(function(mode) {
-
-        const card = document.createElement("div");
-
-        card.className = "gameCard";
-
-        card.onclick = function() {
-            startGame(mode.mode_key);
-        };
-
-        const icon =
-            mode.icon ||
-            getGameIcon(mode.mode_key);
-
-        card.innerHTML =
-            '<div class="gameIcon">' +
-                icon +
-            '</div>' +
-
-            '<div class="gameName">' +
-                escapeHtml(mode.name || mode.mode_key) +
-            '</div>' +
-
-            '<div class="gameDescription">' +
-                escapeHtml(
-                    mode.description || "5 attempts"
-                ) +
-            '</div>';
-
-        grid.appendChild(card);
-    });
-}
-
-
-function getGameIcon(key) {
-
-    const icons = {
-
-        fastest_finger: "⚡",
-        word_sprint: "🔤",
-        rock_paper_scissors: "✊",
-        chess: "♟️",
-        maze_race: "🌀",
-        memory_match: "🧠",
-        number_rush: "🔢",
-        spot_the_difference: "🔎",
-        target_tap: "🎯",
-        pattern_rush: "🧩",
-        odd_one_out: "👀",
-        word_scramble: "🔀"
-    };
-
-    return icons[key] || "🎮";
-}
-
-
-/* ================================
-   START GAME
-================================ */
-
-function startGame(mode) {
-
-    const modeName = mode
-        .replaceAll("_", " ")
-        .replace(/\b\w/g, function(c) {
-            return c.toUpperCase();
-        });
-
-    openModal(
-        modeName,
-        "The " +
-        modeName +
-        " 1v1 game is being prepared. " +
-        "All matches use 5 attempts and regular SwiftFinger scoring."
-    );
-}
-
-
-/* ================================
-   MODAL
-================================ */
-
-function openModal(title, text) {
-
-    document.getElementById("modalTitle").textContent = title;
-    document.getElementById("modalText").textContent = text;
-    document.getElementById("modal").style.display = "flex";
-}
-
-
-function closeModal() {
-
-    document.getElementById("modal").style.display = "none";
-}
-
-
-/* ================================
-   TOAST
-================================ */
-
-function showToast(message) {
-
-    const toast = document.getElementById("toast");
-
-    toast.textContent = message;
-    toast.style.display = "block";
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(function() {
-
-        toast.style.display = "none";
-
-    }, 2500);
-}
-
-
-/* ================================
-   SECURITY HELPERS
-================================ */
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* ================================
-   START APPLICATION
-================================ */
-
-async function initializeApp() {
-
-    try {
-
-        setLoading("Starting SwiftFinger...");
-
-        /*
-           Initialize Telegram.
-        */
-
-        initTelegram();
-
-        /*
-           Authenticate only when opened
-           inside Telegram.
-        */
-
-        if (tg && tg.initData) {
-
-            const authResult =
-                await authenticateTelegram();
-
-            /*
-               If authentication succeeds and
-               returns a player, use it.
-            */
-
-            if (
-                authResult &&
-                authResult.player
-            ) {
-
-                displayPlayer(
-                    authResult.player
-                );
-
-            } else {
-
-                displayPlayer(
-                    telegramUser
-                        ? {
-                            first_name:
-                                telegramUser.first_name,
-                            telegram_username:
-                                telegramUser.username,
-                            rating: 1000
-                        }
-                        : null
-                );
-            }
-
-        } else {
-
-            /*
-               Chrome / normal browser.
-            */
-
-            displayPlayer(
-                telegramUser
-                    ? {
-                        first_name:
-                            telegramUser.first_name,
-                        telegram_username:
-                            telegramUser.username,
-                        rating: 1000
-                    }
-                    : createDemoPlayer()
-            );
-        }
-
-        /*
-           Load game modes.
-        */
-
-        setLoading("Loading games...");
-
-        await loadGameModes();
-
-        /*
-           Show application.
-        */
-
-        showApp();
-
-    } catch (error) {
-
-        console.error(
-            "SwiftFinger startup error:",
-            error
-        );
-
-        /*
-           Never leave the user trapped
-           on the loading screen.
-        */
-
-        displayPlayer(
-            createDemoPlayer()
-        );
-
-        renderModes(
-            fallbackModes
-        );
-
-        showApp();
-    }
-}
-
-
-/* ================================
-   GLOBAL SAFETY NET
-================================ */
-
-window.addEventListener(
-    "error",
-    function(event) {
-
-        console.error(
-            "JavaScript error:",
-            event.error || event.message
-        );
-
-        /*
-           If something fails, still open
-           the basic application.
-        */
-
-        if (
-            document.getElementById("app").style.display !==
-            "block"
-        ) {
-
-            displayPlayer(
-                createDemoPlayer()
-            );
-
-            renderModes(
-                fallbackModes
-            );
-
-            showApp();
-        }
-    }
-);
-
-
-/* ================================
-   RUN
-================================ */
-
-initializeApp();
-
-</script>
-
-</body>
-      </html> <div class="sectionTitle">
-        Game Modes
-    </div>
-
-
-    <div
-        class="modes"
-        id="modesList">
-    </div>
-
-
-    <div class="notice">
-        ⚡ Every 1V1 game uses 5 attempts.
-        There are no draws — every match produces a winner and a loser.
-    </div>
-
-
-    <!-- NAVIGATION -->
-
-    <nav class="bottomNav">
-
-        <button class="navBtn active">
-
-            <span class="navIcon">
-                🏠
-            </span>
 
             Home
 
@@ -984,11 +643,10 @@ initializeApp();
 
         <button
             class="navBtn"
-            onclick="showModes()">
+            onclick="showModes()"
+        >
 
-            <span class="navIcon">
-                🎮
-            </span>
+            <span>🎮</span>
 
             Games
 
@@ -997,11 +655,10 @@ initializeApp();
 
         <button
             class="navBtn"
-            onclick="showLeaderboard()">
+            onclick="showLeaderboard()"
+        >
 
-            <span class="navIcon">
-                🏆
-            </span>
+            <span>🏆</span>
 
             Ranking
 
@@ -1010,11 +667,10 @@ initializeApp();
 
         <button
             class="navBtn"
-            onclick="showNotifications()">
+            onclick="showNotifications()"
+        >
 
-            <span class="navIcon">
-                🔔
-            </span>
+            <span>🔔</span>
 
             Alerts
 
@@ -1023,11 +679,10 @@ initializeApp();
 
         <button
             class="navBtn"
-            onclick="showProfile()">
+            onclick="showProfile()"
+        >
 
-            <span class="navIcon">
-                👤
-            </span>
+            <span>👤</span>
 
             Account
 
@@ -1044,51 +699,22 @@ initializeApp();
 
 <div
     class="modal"
-    id="gameModal">
+    id="modal"
+>
 
     <div class="modalBox">
 
-        <div class="modalTop">
+        <h2 id="modalTitle">
+            SwiftFinger
+        </h2>
 
-            <strong id="modalTitle">
-                Game
-            </strong>
-
-            <button
-                class="closeBtn"
-                onclick="closeModal()">
-                ✕
-            </button>
-
-        </div>
-
-
-        <div class="gameQuestion">
-
-            <h2 id="questionText">
-                Ready? ⚡
-            </h2>
-
-            <p id="questionSub">
-                Your game will appear here.
-            </p>
-
-        </div>
-
-
-        <input
-            id="answerInput"
-            class="answerInput"
-            type="text"
-            placeholder="Enter your answer...">
-
+        <p id="modalText"></p>
 
         <button
-            class="fullBtn"
-            onclick="submitAnswer()">
-
-            SUBMIT ANSWER
-
+            class="closeBtn"
+            onclick="closeModal()"
+        >
+            CLOSE
         </button>
 
     </div>
@@ -1096,11 +722,19 @@ initializeApp();
 </div>
 
 
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
 
 <script>
+
+"use strict";
+
 
 /* =====================================================
    CONFIGURATION
@@ -1112,54 +746,100 @@ const CONFIG = {
         "https://skceglrwxcdkyktbzmnq.supabase.co",
 
     telegramAuthUrl:
-        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth",
-
-    regularPoints:10,
-
-    chessMultiplier:3,
-
-    mazeMultiplier:2,
-
-    referralRewardPerLevel:5,
-
-    maxReferralLevels:10,
-
-    currentWinners:3,
-
-    futureWinners:100
+        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth"
 
 };
 
 
 /* =====================================================
-   STATE
+   GLOBAL VARIABLES
 ===================================================== */
 
+let tg = null;
+
+let telegramUser = null;
+
 let currentPlayer = null;
-
-let gameModes = [];
-
-let currentGame = null;
 
 
 /* =====================================================
    TELEGRAM
 ===================================================== */
 
-const tg =
-    window.Telegram &&
-    window.Telegram.WebApp
-        ? window.Telegram.WebApp
-        : null;
+function initTelegram() {
+
+    try {
+
+        if (
+            window.Telegram &&
+            window.Telegram.WebApp
+        ) {
+
+            tg = window.Telegram.WebApp;
+
+            try {
+
+                tg.ready();
+
+                tg.expand();
+
+            } catch (e) {
+
+                console.log(
+                    "Telegram UI setup warning:",
+                    e
+                );
+
+            }
 
 
-/* =====================================================
-   BASIC DOM
-===================================================== */
+            try {
 
-function el(id){
+                tg.setHeaderColor(
+                    "#050b18"
+                );
 
-    return document.getElementById(id);
+                tg.setBackgroundColor(
+                    "#050b18"
+                );
+
+            } catch (e) {
+
+                console.log(
+                    "Telegram color setup warning:",
+                    e
+                );
+
+            }
+
+
+            if (
+                tg.initDataUnsafe &&
+                tg.initDataUnsafe.user
+            ) {
+
+                telegramUser =
+                    tg.initDataUnsafe.user;
+
+            }
+
+            return true;
+
+        }
+
+        return false;
+
+    } catch (error) {
+
+        console.error(
+            "Telegram initialization error:",
+            error
+        );
+
+        tg = null;
+
+        return false;
+    }
 
 }
 
@@ -1168,380 +848,133 @@ function el(id){
    LOADING
 ===================================================== */
 
-function status(text){
+function setLoading(text) {
 
-    const box =
-        el("loadingStatus");
-
-    if(box){
-        box.textContent = text;
-    }
-
-}
-
-
-function loadingError(text){
-
-    const spinner =
-        el("spinner");
-
-    const error =
-        el("loadingError");
-
-    const button =
-        el("continueBtn");
-
-
-    if(spinner){
-        spinner.style.display = "none";
-    }
-
-
-    if(error){
-
-        error.textContent = text;
-
-        error.style.display = "block";
-
-    }
-
-
-    if(button){
-        button.style.display = "block";
-    }
-
-}
-
-
-function showApp(){
-
-    el("loadingScreen").style.display =
-        "none";
-
-    el("app").style.display =
-        "block";
-
-}
-
-
-/* =====================================================
-   HARD SAFETY TIMER
-===================================================== */
-
-/*
- * This timer is intentionally independent from
- * all other JavaScript.
- *
- * If anything gets stuck for any reason,
- * the user will receive an error instead
- * of an infinite loading screen.
- */
-
-const safetyTimer =
-    setTimeout(function(){
-
-        if(
-            el("loadingScreen") &&
-            el("loadingScreen").style.display !== "none"
-        ){
-
-            loadingError(
-                "SwiftFinger took too long to start. Please tap CONTINUE and try again."
-            );
-
-        }
-
-    },8000);
-
-
-/* =====================================================
-   TELEGRAM INITIALIZATION
-===================================================== */
-
-function initializeTelegram(){
-
-    status(
-        "Connecting to Telegram..."
-    );
-
-
-    if(!tg){
-
-        throw new Error(
-            "Telegram WebApp was not detected. Please launch SwiftFinger from your Telegram bot."
+    const el =
+        document.getElementById(
+            "loadingText"
         );
 
+    if (el) {
+
+        el.textContent = text;
+
+    }
+
+}
+
+
+function showApp() {
+
+    const loading =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+    const app =
+        document.getElementById(
+            "app"
+        );
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
     }
 
 
-    try{
+    if (app) {
 
-        tg.ready();
+        app.style.display =
+            "block";
 
-        tg.expand();
+    }
 
-
-        if(
-            typeof tg.setHeaderColor ===
-            "function"
-        ){
-
-            tg.setHeaderColor(
-                "#050b18"
-            );
-
-        }
+}
 
 
-        if(
-            typeof tg.setBackgroundColor ===
-            "function"
-        ){
+/* =====================================================
+   SUPABASE AUTHENTICATION
+===================================================== */
 
-            tg.setBackgroundColor(
-                "#050b18"
-            );
+async function authenticateTelegram() {
 
-        }
-
-    }catch(error){
+    if (
+        !tg ||
+        !tg.initData
+    ) {
 
         console.log(
-            "Telegram UI warning:",
-            error
+            "No Telegram initData detected."
         );
 
-    }
-
-
-    return true;
-
-}
-
-
-/* =====================================================
-   GET TELEGRAM USER
-===================================================== */
-
-function getTelegramUser(){
-
-    if(!tg){
         return null;
-    }
-
-
-    if(
-        tg.initDataUnsafe &&
-        tg.initDataUnsafe.user
-    ){
-
-        return tg.initDataUnsafe.user;
 
     }
 
 
-    return null;
+    try {
 
-}
-
-
-/* =====================================================
-   AUTHENTICATION
-===================================================== */
-
-async function authenticate(){
-
-    status(
-        "Reading Telegram account..."
-    );
-
-
-    const initData =
-        tg.initData;
-
-
-    /*
-     * Telegram Mini Apps should provide initData
-     * when launched correctly.
-     */
-
-    if(!initData){
-
-        const user =
-            getTelegramUser();
-
-
-        if(user){
-
-            return {
-
-                id:user.id,
-
-                telegram_id:user.id,
-
-                telegram_username:
-                    user.username || null,
-
-                first_name:
-                    user.first_name || null,
-
-                last_name:
-                    user.last_name || null,
-
-                photo_url:
-                    user.photo_url || null,
-
-                rating:1000,
-
-                wins:0,
-
-                losses:0,
-
-                total_matches:0
-
-            };
-
-        }
-
-
-        throw new Error(
-            "Telegram initialization data is missing. Close the Mini App and launch it again from your bot."
+        setLoading(
+            "Authenticating..."
         );
 
-    }
-
-
-    /*
-     * Give the Edge Function a maximum
-     * of 7 seconds to respond.
-     */
-
-    const controller =
-        new AbortController();
-
-
-    const timer =
-        setTimeout(
-            function(){
-                controller.abort();
-            },
-            7000
-        );
-
-
-    try{
 
         const response =
             await fetch(
                 CONFIG.telegramAuthUrl,
                 {
+                    method: "POST",
 
-                    method:"POST",
-
-                    headers:{
+                    headers: {
                         "Content-Type":
                             "application/json"
                     },
 
-                    body:JSON.stringify({
-                        initData:initData
-                    }),
-
-                    signal:controller.signal
-
+                    body: JSON.stringify({
+                        initData:
+                            tg.initData
+                    })
                 }
             );
 
 
-        const text =
-            await response.text();
+        const data =
+            await response.json();
 
 
-        let data;
+        console.log(
+            "Telegram authentication:",
+            data
+        );
 
 
-        try{
-
-            data =
-                JSON.parse(text);
-
-        }catch(error){
-
-            throw new Error(
-                "The Telegram authentication server returned an invalid response."
-            );
-
-        }
-
-
-        if(!response.ok){
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
             throw new Error(
                 data.error ||
-                "Telegram authentication failed."
+                "Telegram authentication failed"
             );
 
         }
 
 
-        if(
-            data.success === false
-        ){
-
-            throw new Error(
-                data.error ||
-                "Telegram authentication failed."
-            );
-
-        }
+        return data;
 
 
-        const player =
-            data.player ||
-            data.user ||
-            data.profile ||
-            (
-                data.data &&
-                (
-                    data.data.player ||
-                    data.data.user
-                )
-            ) ||
-            data.data;
+    } catch (error) {
 
+        console.error(
+            "Authentication error:",
+            error
+        );
 
-        if(!player){
-
-            throw new Error(
-                "Telegram authentication succeeded, but no player account was returned."
-            );
-
-        }
-
-
-        return player;
-
-
-    }catch(error){
-
-        if(
-            error.name ===
-            "AbortError"
-        ){
-
-            throw new Error(
-                "Telegram authentication timed out after 7 seconds."
-            );
-
-        }
-
-
-        throw error;
-
-
-    }finally{
-
-        clearTimeout(timer);
+        return null;
 
     }
 
@@ -1549,2277 +982,75 @@ async function authenticate(){
 
 
 /* =====================================================
-   PLAYER DISPLAY
+   PLAYER
 ===================================================== */
 
-function playerCode(player){
+function createDemoPlayer() {
 
-    if(player.player_code){
-        return player.player_code;
-    }
+    return {
 
+        id: null,
 
-    if(player.code){
-        return player.code;
-    }
+        telegram_id: null,
 
+        telegram_username:
+            "Guest",
 
-    if(player.id){
+        first_name:
+            "Guest",
 
-        return "
-      font-size: 25px;
+        wins: 0,
 
-      box-shadow:
-        0 0 20px rgba(50,150,255,.35);
-    }
+        losses: 0,
 
-    .brand-name {
-      font-size: 21px;
-      font-weight: 900;
-    }
+        rating: 1000
 
-    .brand-tagline {
-      font-size: 11px;
-      color: #9eb5d5;
-      margin-top: 3px;
-    }
+    };
 
-    .profile-button {
-      width: 43px;
-      height: 43px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,.08);
-      color: white;
-      font-size: 21px;
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
-
-    .main {
-      padding: 5px 16px 30px;
-    }
-
-    .screen {
-      display: none;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      margin-top: 8px;
-      padding: 25px 20px;
-
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(19,61,113,.95),
-          rgba(7,29,61,.98)
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-
-      box-shadow:
-        0 20px 50px rgba(0,0,0,.25);
-    }
-
-    .hero-label {
-      color: #55baff;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 {
-      font-size: 40px;
-      line-height: 1.05;
-      margin-bottom: 13px;
-    }
-
-    .hero p {
-      color: #a9bdd8;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    /* =========================
-       BUTTON
-    ========================= */
-
-    .primary-button {
-      width: 100%;
-      min-height: 54px;
-
-      border: 0;
-      border-radius: 16px;
-
-      color: white;
-      font-size: 15px;
-      font-weight: 900;
-
-      background:
-        linear-gradient(
-          100deg,
-          #704cff,
-          #168cff
-        );
-
-      box-shadow:
-        0 10px 30px rgba(30,140,255,.25);
-
-      transition: transform .15s;
-    }
-
-    .primary-button:active {
-      transform: scale(.97);
-    }
-
-    /* =========================
-       AD SLOT
-    ========================= */
-
-    .ad-slot {
-      height: 55px;
-      margin: 15px 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 13px;
-
-      border: 1px dashed rgba(255,255,255,.14);
-
-      color: #6681a9;
-      font-size: 9px;
-      letter-spacing: 1.5px;
-    }
-
-    /* =========================
-       MENU GRID
-    ========================= */
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .menu-card {
-      min-height: 135px;
-
-      text-align: left;
-
-      padding: 17px;
-
-      border-radius: 19px;
-
-      border: 1px solid rgba(255,255,255,.07);
-
-      background:
-        rgba(255,255,255,.055);
-
-      color: white;
-
-      transition:
-        transform .15s,
-        background .15s;
-    }
-
-    .menu-card:active {
-      transform: scale(.97);
-    }
-
-    .menu-icon {
-      font-size: 27px;
-      margin-bottom: 15px;
-    }
-
-    .menu-title {
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .menu-description {
-      color: #8fa7c7;
-      font-size: 11px;
-      margin-top: 6px;
-      line-height: 1.4;
-    }
-
-    /* =========================
-       PAGE TITLE
-    ========================= */
-
-    .back-button {
-      background: none;
-      border: 0;
-      color: #a9bedb;
-      font-size: 14px;
-      margin: 10px 0 18px;
-    }
-
-    .page-label {
-      color: #55baff;
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1.4px;
-    }
-
-    .page-title {
-      font-size: 28px;
-      margin-top: 5px;
-      margin-bottom: 18px;
-    }
-
-    /* =========================
-       MATCHMAKING
-    ========================= */
-
-    .matchmaking {
-      text-align: center;
-      padding: 65px 15px;
-    }
-
-    .match-logo {
-      font-size: 65px;
-
-      animation:
-        pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    .matchmaking h2 {
-      margin-top: 18px;
-      font-size: 24px;
-    }
-
-    .matchmaking p {
-      color: #91a9c8;
-      margin-top: 8px;
-    }
-
-    .loader {
-      width: 45px;
-      height: 45px;
-
-      margin: 28px auto;
-
-      border-radius: 50%;
-
-      border: 4px solid rgba(255,255,255,.1);
-      border-top-color: #2da4ff;
-
-      animation:
-        spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* =========================
-       GAME
-    ========================= */
-
-    .opponent-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      padding: 14px;
-
-      background: rgba(255,255,255,.055);
-
-      border-radius: 16px;
-
-      margin-bottom: 14px;
-    }
-
-    .opponent-name {
-      font-weight: 900;
-    }
-
-    .attempt-counter {
-      text-align: center;
-      background: #09244b;
-      padding: 8px 12px;
-      border-radius: 12px;
-    }
-
-    .attempt-counter strong {
-      display: block;
-      font-size: 19px;
-    }
-
-    .attempt-counter span {
-      color: #839bbb;
-      font-size: 9px;
-    }
-
-    .game-card {
-      padding: 20px;
-
-      border-radius: 23px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #0c2e5e,
-          #071c3b
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .numbers {
-      background: #03152e;
-
-      border-radius: 17px;
-
-      padding: 25px 10px;
-
-      text-align: center;
-
-      font-size: 29px;
-      font-weight: 900;
-
-      letter-spacing: 4px;
-
-      margin-bottom: 15px;
-    }
-
-    .game-clue {
-      color: #a2b7d3;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .answer-input {
-      width: 100%;
-
-      border: 1px solid rgba(255,255,255,.1);
-
-      background: #061a36;
-
-      color: white;
-
-      border-radius: 14px;
-
-      padding: 16px;
-
-      outline: none;
-
-      font-size: 14px;
-    }
-
-    .answer-input:focus {
-      border-color: #2da4ff;
-    }
-
-    /* =========================
-       LEADERBOARD
-    ========================= */
-
-    .tabs {
-      display: flex;
-      gap: 5px;
-
-      padding: 4px;
-
-      background: rgba(255,255,255,.05);
-
-      border-radius: 14px;
-
-      margin-bottom: 12px;
-    }
-
-    .tab {
-      flex: 1;
-
-      border: 0;
-
-      background: transparent;
-
-      color: #91a8c7;
-
-      padding: 11px;
-
-      border-radius: 10px;
-
-      font-weight: 800;
-    }
-
-    .tab.active {
-      background: #123467;
-      color: white;
-    }
-
-    .leaderboard-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-
-      padding: 13px;
-
-      background: rgba(255,255,255,.05);
-
-      border-radius: 15px;
-
-      margin-bottom: 8px;
-    }
-
-    .rank {
-      width: 27px;
-
-      color: #77baff;
-
-      font-weight: 900;
-    }
-
-    .player-info {
-      flex: 1;
-    }
-
-    .player-info strong {
-      display: block;
-      font-size: 13px;
-    }
-
-    .player-info small {
-      color: #8199b9;
-      font-size: 10px;
-    }
-
-    .player-score {
-      text-align: right;
-      font-weight: 900;
-    }
-
-    .player-score small {
-      display: block;
-      color: #8199b9;
-      font-size: 9px;
-      margin-top: 3px;
-    }
-
-    /* =========================
-       PROFILE
-    ========================= */
-
-    .profile-card {
-      text-align: center;
-
-      padding: 28px 20px;
-
-      border-radius: 23px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #0d2f61,
-          #071d3c
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .avatar {
-      width: 75px;
-      height: 75px;
-
-      margin: auto;
-
-      border-radius: 50%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background:
-        linear-gradient(
-          145deg,
-          #714dff,
-          #158fff
-        );
-
-      font-size: 33px;
-    }
-
-    .profile-card h2 {
-      margin-top: 12px;
-    }
-
-    .username {
-      color: #8da5c4;
-      font-size: 12px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      gap: 10px;
-
-      margin-top: 22px;
-    }
-
-    .stat {
-      padding: 15px;
-
-      border-radius: 15px;
-
-      background: rgba(255,255,255,.05);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 23px;
-    }
-
-    .stat span {
-      color: #8299b8;
-      font-size: 10px;
-    }
-
-    /* =========================
-       ANNOUNCEMENT POPUP
-    ========================= */
-
-    .popup {
-      position: fixed;
-
-      inset: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 18px;
-
-      z-index: 1000;
-    }
-
-    .popup.hidden {
-      display: none;
-    }
-
-    .popup-background {
-      position: absolute;
-      inset: 0;
-
-      background:
-        rgba(0,7,20,.82);
-
-      backdrop-filter:
-        blur(8px);
-    }
-
-    .popup-card {
-      position: relative;
-
-      width: 100%;
-      max-width: 450px;
-
-      max-height: 90vh;
-
-      overflow-y: auto;
-
-      padding: 27px;
-
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #10376e,
-          #071d3d
-        );
-
-      border: 1px solid rgba(255,255,255,.12);
-
-      box-shadow:
-        0 25px 90px rgba(0,0,0,.55);
-    }
-
-    .close-popup {
-      position: absolute;
-
-      right: 13px;
-      top: 11px;
-
-      width: 36px;
-      height: 36px;
-
-      border: 0;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,.08);
-
-      color: white;
-
-      font-size: 23px;
-    }
-
-    .trophy {
-      font-size: 43px;
-      margin-bottom: 7px;
-    }
-
-    .popup-label {
-      color: #55baff;
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1.4px;
-    }
-
-    .popup-card h2 {
-      font-size: 25px;
-      margin-top: 8px;
-    }
-
-    .popup-text {
-      color: #a9bdd8;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-top: 10px;
-    }
-
-    .growth {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      gap: 13px;
-
-      margin: 20px 0;
-    }
-
-    .growth-box {
-      min-width: 100px;
-
-      padding: 13px;
-
-      text-align: center;
-
-      border-radius: 15px;
-
-      background: rgba(255,255,255,.055);
-    }
-
-    .growth-box span {
-      display: block;
-
-      color: #8299b9;
-
-      font-size: 9px;
-
-      letter-spacing: 1px;
-    }
-
-    .growth-box strong {
-      display: block;
-
-      margin-top: 4px;
-
-      font-size: 18px;
-    }
-
-    .growth-arrow {
-      color: #58baff;
-      font-size: 23px;
-    }
-
-    .prize-box {
-      padding: 14px;
-
-      border-radius: 15px;
-
-      background: rgba(36,207,123,.08);
-
-      border: 1px solid rgba(36,207,123,.15);
-
-      color: #d1f7e2;
-
-      font-size: 12px;
-
-      line-height: 1.5;
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    .toast {
-      position: fixed;
-
-      bottom: 25px;
-      left: 50%;
-
-      transform:
-        translate(-50%,20px);
-
-      opacity: 0;
-
-      pointer-events: none;
-
-      z-index: 2000;
-
-      background: #102d57;
-
-      border: 1px solid rgba(255,255,255,.1);
-
-      color: white;
-
-      padding: 11px 16px;
-
-      border-radius: 12px;
-
-      font-size: 12px;
-
-      transition: .25s;
-    }
-
-    .toast.show {
-      opacity: 1;
-
-      transform:
-        translate(-50%,0);
-    }
-
-  </style>
-</head>
-
-<body>
-
-<div class="app">
-
-  <!-- =========================
-       HEADER
-  ========================== -->
-
-  <header class="header">
-
-    <div class="brand">
-
-      <div class="logo">
-        ⚡☝️
-      </div>
-
-      <div>
-        <div class="brand-name">
-          SwiftFinger
-        </div>
-
-        <div class="brand-tagline">
-          Decode. React. Win.
-        </div>
-      </div>
-
-    </div>
-
-    <button
-      class="profile-button"
-      onclick="openScreen('profileScreen')"
-    >
-      👤
-    </button>
-
-  </header>
-
-
-  <main class="main">
-
-    <!-- =========================
-         HOME
-    ========================== -->
-
-    <section
-      id="homeScreen"
-      class="screen active"
-    >
-
-      <div class="hero">
-
-        <div class="hero-label">
-          ⚡ FAST 1v1 CHALLENGES
-        </div>
-
-        <h1>
-          Think fast.<br>
-          Climb higher.
-        </h1>
-
-        <p>
-          Challenge players, decode numbers
-          and build your winning streak.
-        </p>
-
-        <button
-          class="primary-button"
-          onclick="startMatchmaking()"
-        >
-          PLAY 1v1 ⚡
-        </button>
-
-      </div>
-
-
-      <!-- BANNER AD -->
-
-      <div class="ad-slot">
-        BANNER AD
-      </div>
-
-
-      <!-- MENU -->
-
-      <div class="menu-grid">
-
-        <button
-          class="menu-card"
-          onclick="openScreen('decodeScreen')"
-        >
-
-          <div class="menu-icon">
-            🔢
-          </div>
-
-          <div class="menu-title">
-            Decode Numbers
-          </div>
-
-          <div class="menu-description">
-            Find the hidden sentence
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-card"
-          onclick="openScreen('leaderboardScreen')"
-        >
-
-          <div class="menu-icon">
-            🏆
-          </div>
-
-          <div class="menu-title">
-            Leaderboard
-          </div>
-
-          <div class="menu-description">
-            Weekly + all-time rankings
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-card"
-          onclick="openScreen('profileScreen')"
-        >
-
-          <div class="menu-icon">
-            👤
-          </div>
-
-          <div class="menu-title">
-            My Profile
-          </div>
-
-          <div class="menu-description">
-            Wins, losses, streak & rating
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-card"
-          onclick="showRules()"
-        >
-
-          <div class="menu-icon">
-            ℹ️
-          </div>
-
-          <div class="menu-title">
-            How It Works
-          </div>
-
-          <div class="menu-description">
-            Learn the game rules
-          </div>
-
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         MATCHMAKING
-    ========================== -->
-
-    <section
-      id="matchmakingScreen"
-      class="screen"
-    >
-
-      <button
-        class="back-button"
-        onclick="openScreen('homeScreen')"
-      >
-        ← Back
-      </button>
-
-
-      <div class="matchmaking">
-
-        <div class="match-logo">
-          ⚡☝️
-        </div>
-
-        <h2>
-          Finding an opponent
-        </h2>
-
-        <p>
-          Shuffling the lobby…
-        </p>
-
-        <div class="loader"></div>
-
-        <button
-          class="primary-button"
-          onclick="openScreen('homeScreen')"
-        >
-          CANCEL
-        </button>
-
-      </div>
-
-
-      <div class="ad-slot">
-        BANNER AD
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         ACTIVE MATCH
-    ========================== -->
-
-    <section
-      id="matchScreen"
-      class="screen"
-    >
-
-      <button
-        class="back-button"
-        onclick="openScreen('homeScreen')"
-      >
-        ← Leave Match
-      </button>
-
-
-      <div class="opponent-bar">
-
-        <div>
-
-          <small
-            style="color:#8199b9;font-size:9px;"
-          >
-            OPPONENT
-          </small>
-
-          <div class="opponent-name">
-            SwiftFinger Player
-          </div>
-
-        </div>
-
-
-        <div class="attempt-counter">
-
-          <strong id="attempts">
-            5
-          </strong>
-
-          <span>
-            attempts
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="game-card">
-
-        <div class="numbers">
-          4 5 3 15 9
-        </div>
-
-        <div class="game-clue">
-          Decode these numbers into a
-          meaningful sentence.
-        </div>
-
-        <input
-          id="gameAnswer"
-          class="answer-input"
-          type="text"
-          placeholder="Type your answer"
-        >
-
-        <button
-          class="primary-button"
-          style="margin-top:12px;"
-          onclick="submitAttempt()"
-        >
-          SUBMIT ⚡
-        </button>
-
-        <div
-          id="gameFeedback"
-          style="
-            text-align:center;
-            margin-top:12px;
-            min-height:20px;
-            font-size:12px;
-            font-weight:bold;
-          "
-        ></div>
-
-      </div>
-
-
-      <div
-        style="
-          text-align:center;
-          color:#617b9f;
-          font-size:10px;
-          margin-top:14px;
-        "
-      >
-        🚫 No ads cover active gameplay.
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         DECODE NUMBERS
-    ========================== -->
-
-    <section
-      id="decodeScreen"
-      class="screen"
-    >
-
-      <button
-        class="back-button"
-        onclick="openScreen('homeScreen')"
-      >
-        ← Back
-      </button>
-
-      <div class="page-label">
-        DAILY CHALLENGE
-      </div>
-
-      <h2 class="page-title">
-        Decode Numbers
-      </h2>
-
-
-      <div class="ad-slot">
-        BANNER AD
-      </div>
-
-
-      <div class="game-card">
-
-        <div class="numbers">
-          4 5 3 15 9
-        </div>
-
-        <div class="game-clue">
-          Decode these numbers into a
-          meaningful sentence.
-        </div>
-
-        <input
-          id="decodeAnswer"
-          class="answer-input"
-          placeholder="Enter decoded sentence"
-        >
-
-        <button
-          class="primary-button"
-          style="margin-top:12px;"
-          onclick="submitDecode()"
-        >
-          SUBMIT ANSWER
-        </button>
-
-        <div
-          id="decodeFeedback"
-          style="
-            text-align:center;
-            margin-top:12px;
-            min-height:20px;
-            font-size:12px;
-            font-weight:bold;
-          "
-        ></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         LEADERBOARD
-    ========================== -->
-
-    <section
-      id="leaderboardScreen"
-      class="screen"
-    >
-
-      <button
-        class="back-button"
-        onclick="openScreen('homeScreen')"
-      >
-        ← Back
-      </button>
-
-      <div class="page-label">
-        RANKINGS
-      </div>
-
-      <h2 class="page-title">
-        Leaderboard
-      </h2>
-
-
-      <div class="tabs">
-
-        <button
-          class="tab active"
-          onclick="changeBoard(this)"
-        >
-          Weekly
-        </button>
-
-        <button
-          class="tab"
-          onclick="changeBoard(this)"
-        >
-          All-time
-        </button>
-
-    
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no">
-
-<title>SwiftFinger ⚡</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-html,body{
-    width:100%;
-    min-height:100%;
-    background:#050b18;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-    overflow-x:hidden;
-}
-
-button{
-    font-family:inherit;
-    cursor:pointer;
-    border:0;
-}
-
-#loadingScreen{
-    position:fixed;
-    inset:0;
-    z-index:99999;
-    background:#050b18;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
-}
-
-.loadingBox{
-    width:100%;
-    max-width:390px;
-    text-align:center;
-}
-
-.logo{
-    width:75px;
-    height:75px;
-    margin:0 auto 18px;
-    border-radius:22px;
-    background:linear-gradient(135deg,#ffd400,#ff8a00);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:40px;
-    box-shadow:0 0 35px rgba(255,190,0,.35);
-}
-
-.loadingTitle{
-    font-size:28px;
-    font-weight:900;
-    margin-bottom:7px;
-}
-
-.loadingTagline{
-    color:#7f91ad;
-    font-size:12px;
-    letter-spacing:1.5px;
-    margin-bottom:30px;
-}
-
-.spinner{
-    width:42px;
-    height:42px;
-    margin:0 auto 20px;
-    border:4px solid #17243b;
-    border-top-color:#ffd400;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
-#loadingStatus{
-    color:#b9c6d9;
-    font-size:14px;
-    min-height:20px;
-}
-
-#loadingError{
-    display:none;
-    margin-top:18px;
-    padding:14px;
-    border-radius:12px;
-    background:#29131a;
-    border:1px solid #713040;
-    color:#ff9cac;
-    font-size:13px;
-    line-height:1.5;
-}
-
-#continueBtn{
-    display:none;
-    margin:18px auto 0;
-    padding:13px 22px;
-    border-radius:12px;
-    background:#ffd400;
-    color:#111;
-    font-weight:800;
-}
-
-#app{
-    display:none;
-    width:100%;
-    max-width:480px;
-    margin:auto;
-    min-height:100vh;
-    padding-bottom:90px;
-}
-
-.header{
-    padding:20px 18px 12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.brandIcon{
-    width:43px;
-    height:43px;
-    border-radius:13px;
-    background:linear-gradient(135deg,#ffd400,#ff8500);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-}
-
-.brandName{
-    font-size:18px;
-    font-weight:900;
-}
-
-.brandTag{
-    font-size:8px;
-    color:#71829b;
-    letter-spacing:1px;
-    margin-top:3px;
-}
-
-.playerBox{
-    text-align:right;
-}
-
-.playerId{
-    font-size:12px;
-    color:#ffd400;
-    font-weight:bold;
-}
-
-.playerScore{
-    font-size:11px;
-    color:#8c9bb0;
-    margin-top:3px;
-}
-
-.hero{
-    margin:10px 16px 18px;
-    padding:24px 20px;
-    border-radius:22px;
-    background:linear-gradient(145deg,#0b2141,#071326);
-    border:1px solid #183453;
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-}
-
-.heroSmall{
-    color:#ffd400;
-    font-size:11px;
-    font-weight:bold;
-    letter-spacing:1px;
-    margin-bottom:8px;
-}
-
-.hero h1{
-    font-size:29px;
-    line-height:1.05;
-    margin-bottom:9px;
-}
-
-.hero p{
-    color:#8fa0b7;
-    font-size:13px;
-    line-height:1.5;
-}
-
-.sectionTitle{
-    padding:0 18px;
-    margin:20px 0 11px;
-    font-size:16px;
-    font-weight:900;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    padding:0 16px;
-}
-
-.card{
-    padding:18px;
-    min-height:145px;
-    border-radius:18px;
-    background:#0a1629;
-    border:1px solid #172a44;
-    transition:.2s;
-}
-
-.card:active{
-    transform:scale(.97);
-}
-
-.cardIcon{
-    font-size:28px;
-    margin-bottom:12px;
-}
-
-.card h3{
-    font-size:14px;
-    margin-bottom:6px;
-}
-
-.card p{
-    color:#71839c;
-    font-size:11px;
-    line-height:1.4;
-}
-
-.playBtn{
-    margin-top:12px;
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    background:#ffd400;
-    color:#111;
-    font-size:11px;
-    font-weight:900;
-}
-
-.modes{
-    padding:0 16px;
-}
-
-.mode{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px;
-    margin-bottom:9px;
-    border-radius:14px;
-    background:#0a1629;
-    border:1px solid #172a44;
-}
-
-.modeLeft{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.modeIcon{
-    width:38px;
-    height:38px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:11px;
-    background:#101f35;
-    font-size:20px;
-}
-
-.modeName{
-    font-size:13px;
-    font-weight:bold;
-}
-
-.modeDesc{
-    color:#71839c;
-    font-size:10px;
-    margin-top:3px;
-}
-
-.modePlay{
-    padding:8px 12px;
-    border-radius:9px;
-    background:#132640;
-    color:#ffd400;
-    font-size:10px;
-    font-weight:bold;
-}
-
-.bottomNav{
-    position:fixed;
-    left:50%;
-    bottom:0;
-    transform:translateX(-50%);
-    width:100%;
-    max-width:480px;
-    padding:9px 8px 12px;
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    background:#07101f;
-    border-top:1px solid #15263d;
-    z-index:500;
-}
-
-.navBtn{
-    background:none;
-    color:#60728a;
-    font-size:9px;
-    text-align:center;
-}
-
-.navIcon{
-    font-size:19px;
-    display:block;
-    margin-bottom:3px;
-}
-
-.navBtn.active{
-    color:#ffd400;
-}
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:2000;
-    background:rgba(0,0,0,.78);
-    padding:25px 16px;
-    align-items:flex-end;
-    justify-content:center;
-}
-
-.modalBox{
-    width:100%;
-    max-width:480px;
-    max-height:85vh;
-    overflow:auto;
-    border-radius:22px 22px 0 0;
-    background:#0a1629;
-    border:1px solid #1a3452;
-    padding:20px;
-}
-
-.modalTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-
-.closeBtn{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    background:#14243a;
-    color:#fff;
-}
-
-.gameQuestion{
-    padding:25px 15px;
-    border-radius:16px;
-    background:#071326;
-    text-align:center;
-    margin-bottom:15px;
-}
-
-.gameQuestion h2{
-    font-size:25px;
-    margin-bottom:8px;
-}
-
-.gameQuestion p{
-    color:#8293aa;
-    font-size:12px;
-}
-
-.answerInput{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    border:1px solid #223b5b;
-    background:#071326;
-    color:#fff;
-    outline:none;
-    margin-bottom:10px;
-}
-
-.fullBtn{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    background:#ffd400;
-    color:#111;
-    font-weight:900;
-}
-
-.notice{
-    margin:16px;
-    padding:14px;
-    border-radius:14px;
-    background:#0a1629;
-    border:1px solid #172a44;
-    color:#8293aa;
-    font-size:12px;
-    line-height:1.5;
-}
-
-.hidden{
-    display:none!important;
-}
-</style>
-</head>
-
-<body>
-
-<div id="loadingScreen">
-    <div class="loadingBox">
-        <div class="logo">⚡</div>
-
-        <div class="loadingTitle">SWIFTFINGER</div>
-
-        <div class="loadingTagline">
-            THINK FAST • PLAY SMART • WIN BIG
-        </div>
-
-        <div class="spinner" id="spinner"></div>
-
-        <div id="loadingStatus">
-            Starting SwiftFinger...
-        </div>
-
-        <div id="loadingError"></div>
-
-        <button id="continueBtn">
-            Continue
-        </button>
-    </div>
-</div>
-
-<div id="app">
-
-    <header class="header">
-        <div class="brand">
-            <div class="brandIcon">⚡</div>
-            <div>
-                <div class="brandName">SWIFTFINGER</div>
-                <div class="brandTag">THINK FAST • PLAY SMART • WIN BIG</div>
-            </div>
-        </div>
-
-        <div class="playerBox">
-            <div class="playerId" id="playerId">SF---</div>
-            <div class="playerScore">
-                ⭐ <span id="playerScore">0</span>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="heroSmall">⚡ DAILY CHALLENGE</div>
-        <h1>Think Fast.<br>Win Big.</h1>
-        <p>
-            Test your speed, memory and thinking skills.
-            Challenge other players and climb the leaderboard.
-        </p>
-    </section>
-
-    <div class="sectionTitle">Featured Games</div>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="cardIcon">🔢</div>
-            <h3>Decode Numbers</h3>
-            <p>Decode the hidden sentence before everyone else.</p>
-            <button class="playBtn" onclick="openGame('Decode Numbers')">
-                PLAY NOW
-            </button>
-        </div>
-
-        <div class="card">
-            <div class="cardIcon">⚔️</div>
-            <h3>1V1 Match</h3>
-            <p>Challenge another player in a five-attempt battle.</p>
-            <button class="playBtn" onclick="openMatch()">
-                FIND OPPONENT
-            </button>
-        </div>
-
-    </div>
-
-    <div class="sectionTitle">Game Modes</div>
-
-    <div class="modes" id="modesList"></div>
-
-    <div class="notice">
-        ⚡ SwiftFinger uses 5 attempts for every 1V1 game.
-        There are no draws — every match ends with a winner and a loser.
-    </div>
-
-    <nav class="bottomNav">
-
-        <button class="navBtn active">
-            <span class="navIcon">🏠</span>
-            Home
-        </button>
-
-        <button class="navBtn" onclick="showModes()">
-            <span class="navIcon">🎮</span>
-            Games
-        </button>
-
-        <button class="navBtn" onclick="showLeaderboard()">
-            <span class="navIcon">🏆</span>
-            Ranking
-        </button>
-
-        <button class="navBtn" onclick="showNotifications()">
-            <span class="navIcon">🔔</span>
-            Alerts
-        </button>
-
-        <button class="navBtn" onclick="showProfile()">
-            <span class="navIcon">👤</span>
-            Account
-        </button>
-
-    </nav>
-
-</div>
-
-<div class="modal" id="gameModal">
-    <div class="modalBox">
-
-        <div class="modalTop">
-            <strong id="modalTitle">Game</strong>
-            <button class="closeBtn" onclick="closeModal()">✕</button>
-        </div>
-
-        <div class="gameQuestion">
-            <h2 id="questionText">Ready?</h2>
-            <p id="questionSub">
-                Your game will appear here.
-            </p>
-        </div>
-
-        <input
-            id="answerInput"
-            class="answerInput"
-            placeholder="Enter your answer..."
-        >
-
-        <button class="fullBtn" onclick="submitAnswer()">
-            SUBMIT ANSWER
-        </button>
-
-    </div>
-</div>
-
-<script>
-/* =========================================================
-   SWIFTFINGER CONFIGURATION
-========================================================= */
-
-const SWIFTFINGER_CONFIG = {
-
-    supabaseUrl:
-        "https://skceglrwxcdkyktbzmnq.supabase.co",
-
-    telegramAuthUrl:
-        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth",
-
-    regularPoints: 10,
-
-    chessMultiplier: 3,
-
-    mazeMultiplier: 2,
-
-    referralRewardPerLevel: 5,
-
-    maxReferralLevels: 10,
-
-    currentWinners: 3,
-
-    futureWinners: 100
-};
-
-
-/* =========================================================
-   TELEGRAM
-========================================================= */
-
-const tg =
-    window.Telegram &&
-    window.Telegram.WebApp
-        ? window.Telegram.WebApp
-        : null;
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentPlayer = null;
-
-let gameModes = [];
-
-let currentGame = null;
-
-
-/* =========================================================
-   DOM HELPERS
-========================================================= */
-
-function $(id){
-    return document.getElementById(id);
 }
 
 
-function setLoading(message){
+function displayPlayer(player) {
 
-    const status = $("loadingStatus");
+    if (!player) {
 
-    if(status){
-        status.textContent = message;
-    }
-}
+        player =
+            createDemoPlayer();
 
-
-function showLoadingError(message){
-
-    const spinner = $("spinner");
-    const error = $("loadingError");
-    const continueBtn = $("continueBtn");
-
-    if(spinner){
-        spinner.style.display = "none";
-    }
-
-    if(error){
-        error.textContent = message;
-        error.style.display = "block";
-    }
-
-    if(continueBtn){
-        continueBtn.style.display = "block";
-    }
-}
-
-
-function showApp(){
-
-    $("loadingScreen").style.display = "none";
-
-    $("app").style.display = "block";
-}
-
-
-/* =========================================================
-   TELEGRAM USER
-========================================================= */
-
-function getTelegramUser(){
-
-    if(!tg){
-        return null;
-    }
-
-    return tg.initDataUnsafe &&
-           tg.initDataUnsafe.user
-           ? tg.initDataUnsafe.user
-           : null;
-}
-
-
-/* =========================================================
-   AUTHENTICATION
-========================================================= */
-
-async function authenticateTelegram(){
-
-    setLoading("Connecting to Telegram...");
-
-    if(!tg){
-
-        throw new Error(
-            "Telegram WebApp was not detected. Open SwiftFinger from your Telegram bot."
-        );
     }
 
 
-    try{
-        tg.ready();
-        tg.expand();
-    }catch(error){
-        console.log("Telegram UI setup:", error);
-    }
-
-
-    const initData = tg.initData;
-
-
-    if(!initData){
-
-        const telegramUser = getTelegramUser();
-
-        if(telegramUser){
-
-            return {
-                id: telegramUser.id,
-                telegram_id: telegramUser.id,
-                telegram_username:
-                    telegramUser.username || null,
-                first_name:
-                    telegramUser.first_name || null,
-                last_name:
-                    telegramUser.last_name || null,
-                photo_url:
-                    telegramUser.photo_url || null,
-                wins:0,
-                losses:0,
-                rating:1000,
-                total_matches:0
-            };
-
-        }
-
-        throw new Error(
-            "Telegram did not provide initialization data. Close SwiftFinger and launch it again from the bot."
-        );
-    }
-
-
-    setLoading("Reading Telegram account...");
-
-
-    const controller =
-        new AbortController();
-
-    const timeout =
-        setTimeout(
-            () => controller.abort(),
-            10000
-        );
-
-
-    try{
-
-        const response =
-            await fetch(
-                SWIFTFINGER_CONFIG.telegramAuthUrl,
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:JSON.stringify({
-                        initData:initData
-                    }),
-
-                    signal:controller.signal
-                }
-            );
-
-
-        const text =
-            await response.text();
-
-
-        let data;
-
-        try{
-            data = JSON.parse(text);
-        }catch{
-            throw new Error(
-                "Telegram authentication returned an invalid response."
-            );
-        }
-
-
-        if(!response.ok){
-
-            throw new Error(
-                data.error ||
-                "Telegram authentication failed."
-            );
-        }
-
-
-        if(data.success === false){
-
-            throw new Error(
-                data.error ||
-                "Telegram authentication failed."
-            );
-        }
-
-
-        const player =
-            data.player ||
-            data.user ||
-            data.profile ||
-            data.data?.player ||
-            data.data?.user ||
-            data.data;
-
-
-        if(!player){
-
-            throw new Error(
-                "Authentication succeeded, but no player account was returned."
-            );
-        }
-
-
-        return player;
-
-    }catch(error){
-
-        if(error.name === "AbortError"){
-
-            throw new Error(
-                "Telegram authentication timed out. Please try again."
-            );
-        }
-
-        throw error;
-
-    }finally{
-
-        clearTimeout(timeout);
-
-    }
-}
-
-
-/* =========================================================
-   LOAD PLAYER
-========================================================= */
-
-async function loadPlayer(){
-
-    if(!currentPlayer){
-        return;
-    }
+    currentPlayer =
+        player;
 
 
     const playerId =
-        currentPlayer.id ||
-        currentPlayer.player_id;
-
-
-    $("playerId").textContent =
-        formatPlayerId(
-            currentPlayer
+        document.getElementById(
+            "playerId"
         );
 
 
-    $("playerScore").textContent =
-        currentPlayer.rating ||
-        currentPlayer.score ||
-        0;
-}
-
-
-function formatPlayerId(player){
-
-    if(player.player_code){
-        return player.player_code;
-    }
-
-    if(player.code){
-        return player.code;
-    }
-
-    if(player.id){
-
-        const number =
-            String(player.id)
-                .padStart(3,"0");
-
-        return "SF" + number;
-    }
-
-    return "SF---";
-}
-
-
-/* =========================================================
-   LOAD GAME MODES
-========================================================= */
-
-async function loadGameModes(){
-
-    setLoading("Loading game modes...");
-
-
-    const url =
-        SWIFTFINGER_CONFIG.supabaseUrl +
-        "/rest/v1/rpc/get_game_modes";
-
-
-    const response =
-        await fetch(
-            url,
-            {
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body:"{}"
-            }
+    const score =
+        document.getElementById(
+            "playerScore"
         );
 
 
-    if(!response.ok){
+    if (playerId) {
 
-        throw new Error(
-            "Unable to load game modes."
-        );
-    }
+        if (player.id) {
 
+            playerId.textContent =
+                "SF" +
+                String(
+                    player.id
+                ).padStart(3, "0") +
+                " ✓";
 
-    const data =
-        await response.json();
+        } else {
 
+            playerId.textContent =
+                "GUEST";
 
-    if(Array.isArray(data)){
-
-        gameModes = data;
-
-    }else{
-
-        gameModes = [];
-    }
-
-
-    renderGameModes();
-}
-
-
-/* =========================================================
-   GAME MODES
-========================================================= */
-
-const fallbackModes = [
-
-    ["⚡","Fastest Finger","Original 5-attempt challenge"],
-
-    ["🔤","Word Sprint","Find a valid 4–6 letter word"],
-
-    ["✊","Rock Paper Scissors","Beat your opponent"],
-
-    ["♟️","Chess","Classic chess battle"],
-
-    ["🌀","Maze Race","Reach the finish first"],
-
-    ["🧠","Memory Match","Remember and match pairs"],
-
-    ["🔢","Number Rush","Solve numbers quickly"],
-
-    ["👀","Spot the Difference","Find the odd detail"],
-
-    ["🎯","Target Tap","Tap the target quickly"],
-
-    ["🔷","Pattern Rush","Remember the pattern"],
-
-    ["🔍","Odd One Out","Find the different item"],
-
-    ["🔀","Word Scramble","Unscramble the word"]
-
-];
-
-
-function renderGameModes(){
-
-    const container =
-        $("modesList");
-
-    if(!container){
-        return;
-    }
-
-
-    container.innerHTML = "";
-
-
-    if(gameModes.length === 0){
-
-        fallbackModes.forEach(
-            mode => {
-
-                const div =
-                    document.createElement("div");
-
-                div.className = "mode";
-
-                div.innerHTML = `
-                    <div class="modeLeft">
-                        <div class="modeIcon">
-                            ${mode[0]}
-                        </div>
-
-                        <div>
-                            <div class="modeName">
-                                ${escapeHtml(mode[1])}
-                            </div>
-
-                            <div class="modeDesc">
-                                ${escapeHtml(mode[2])}
-                            </div>
-                        </div>
-                    </div>
-
-                    <button
-                        class="modePlay"
-                        onclick="openGame('${escapeAttr(mode[1])}')">
-                        PLAY
-                    </button>
-                `;
-
-                container.appendChild(div);
-            }
-        );
-
-        return;
-    }
-
-
-    gameModes.forEach(
-        mode => {
-
-            const div =
-                document.createElement("div");
-
-            div.className = "mode";
-
-
-            const icon =
-                getModeIcon(
-             
+        }
+    
