@@ -1053,4 +1053,929 @@ function displayPlayer(player) {
                 "GUEST";
 
         }
-    
+
+    }
+
+
+    if (score) {
+
+        score.textContent =
+            "★ " +
+            (
+                player.rating ||
+                1000
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   GAME MODES
+===================================================== */
+
+const fallbackModes = [
+
+    {
+        mode_key:
+            "fastest_finger",
+
+        name:
+            "Fastest Finger",
+
+        description:
+            "The original 5-attempt challenge.",
+
+        icon:
+            "⚡"
+    },
+
+
+    {
+        mode_key:
+            "word_sprint",
+
+        name:
+            "Word Sprint",
+
+        description:
+            "Make the fastest valid word.",
+
+        icon:
+            "🔤"
+    },
+
+
+    {
+        mode_key:
+            "rock_paper_scissors",
+
+        name:
+            "Rock Paper Scissors",
+
+        description:
+            "Choose your move quickly.",
+
+        icon:
+            "✊"
+    },
+
+
+    {
+        mode_key:
+            "chess",
+
+        name:
+            "Chess",
+
+        description:
+            "Outsmart your opponent.",
+
+        icon:
+            "♟️"
+    },
+
+
+    {
+        mode_key:
+            "maze_race",
+
+        name:
+            "Maze Race",
+
+        description:
+            "Race through your hidden maze.",
+
+        icon:
+            "🌀"
+    },
+
+
+    {
+        mode_key:
+            "memory_match",
+
+        name:
+            "Memory Match",
+
+        description:
+            "Remember and match.",
+
+        icon:
+            "🧠"
+    },
+
+
+    {
+        mode_key:
+            "number_rush",
+
+        name:
+            "Number Rush",
+
+        description:
+            "Solve numbers quickly.",
+
+        icon:
+            "🔢"
+    },
+
+
+    {
+        mode_key:
+            "spot_the_difference",
+
+        name:
+            "Spot the Difference",
+
+        description:
+            "Find what changed.",
+
+        icon:
+            "🔎"
+    },
+
+
+    {
+        mode_key:
+            "target_tap",
+
+        name:
+            "Target Tap",
+
+        description:
+            "Tap the target first.",
+
+        icon:
+            "🎯"
+    },
+
+
+    {
+        mode_key:
+            "pattern_rush",
+
+        name:
+            "Pattern Rush",
+
+        description:
+            "Remember the pattern.",
+
+        icon:
+            "🧩"
+    },
+
+
+    {
+        mode_key:
+            "odd_one_out",
+
+        name:
+            "Odd One Out",
+
+        description:
+            "Find the different item.",
+
+        icon:
+            "👀"
+    },
+
+
+    {
+        mode_key:
+            "word_scramble",
+
+        name:
+            "Word Scramble",
+
+        description:
+            "Unscramble the word.",
+
+        icon:
+            "🔀"
+    }
+
+];
+
+
+/* =====================================================
+   LOAD GAME MODES
+===================================================== */
+
+async function loadGameModes() {
+
+    try {
+
+        const response =
+            await fetch(
+                CONFIG.supabaseUrl +
+                "/rest/v1/rpc/get_game_modes",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: "{}"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Game modes request failed"
+            );
+
+        }
+
+
+        const modes =
+            await response.json();
+
+
+        if (
+            Array.isArray(modes) &&
+            modes.length > 0
+        ) {
+
+            renderModes(modes);
+
+        } else {
+
+            renderModes(
+                fallbackModes
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.log(
+            "Using fallback game modes:",
+            error
+        );
+
+
+        renderModes(
+            fallbackModes
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER GAME MODES
+===================================================== */
+
+function renderModes(modes) {
+
+    const grid =
+        document.getElementById(
+            "gameGrid"
+        );
+
+
+    if (!grid) {
+
+        return;
+
+    }
+
+
+    grid.innerHTML = "";
+
+
+    modes.forEach(
+        function(mode) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "gameCard";
+
+
+            card.onclick =
+                function() {
+
+                    startGame(
+                        mode.mode_key
+                    );
+
+                };
+
+
+            const icon =
+                mode.icon ||
+                getGameIcon(
+                    mode.mode_key
+                );
+
+
+            card.innerHTML =
+
+                '<div class="gameIcon">' +
+                    escapeHtml(icon) +
+                '</div>' +
+
+                '<div class="gameName">' +
+                    escapeHtml(
+                        mode.name ||
+                        mode.mode_key
+                    ) +
+                '</div>' +
+
+                '<div class="gameDescription">' +
+                    escapeHtml(
+                        mode.description ||
+                        "5 attempts"
+                    ) +
+                '</div>';
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   GAME ICONS
+===================================================== */
+
+function getGameIcon(key) {
+
+    const icons = {
+
+        fastest_finger:
+            "⚡",
+
+        word_sprint:
+            "🔤",
+
+        rock_paper_scissors:
+            "✊",
+
+        chess:
+            "♟️",
+
+        maze_race:
+            "🌀",
+
+        memory_match:
+            "🧠",
+
+        number_rush:
+            "🔢",
+
+        spot_the_difference:
+            "🔎",
+
+        target_tap:
+            "🎯",
+
+        pattern_rush:
+            "🧩",
+
+        odd_one_out:
+            "👀",
+
+        word_scramble:
+            "🔀"
+
+    };
+
+
+    return (
+        icons[key] ||
+        "🎮"
+    );
+
+}
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+function startGame(mode) {
+
+    if (!mode) {
+
+        return;
+
+    }
+
+
+    const modeName =
+        String(mode)
+            .replace(
+                /_/g,
+                " "
+            )
+            .replace(
+                /\b\w/g,
+                function(c) {
+
+                    return c.toUpperCase();
+
+                }
+            );
+
+
+    openModal(
+
+        modeName,
+
+        "The " +
+        modeName +
+        " 1v1 game is being prepared. " +
+        "All matches use 5 attempts and regular SwiftFinger scoring."
+
+    );
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function openModal(
+    title,
+    text
+) {
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+
+    const modalTitle =
+        document.getElementById(
+            "modalTitle"
+        );
+
+
+    const modalText =
+        document.getElementById(
+            "modalText"
+        );
+
+
+    if (modalTitle) {
+
+        modalTitle.textContent =
+            title;
+
+    }
+
+
+    if (modalText) {
+
+        modalText.textContent =
+            text;
+
+    }
+
+
+    if (modal) {
+
+        modal.style.display =
+            "flex";
+
+    }
+
+}
+
+
+function closeModal() {
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+
+    if (modal) {
+
+        modal.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    if (!toast) {
+
+        return;
+
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+        setTimeout(
+            function() {
+
+                toast.style.display =
+                    "none";
+
+            },
+            2500
+        );
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function showModes() {
+
+    const gameGrid =
+        document.getElementById(
+            "gameGrid"
+        );
+
+
+    if (gameGrid) {
+
+        gameGrid.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
+
+
+function showLeaderboard() {
+
+    showToast(
+        "Leaderboard coming soon"
+    );
+
+}
+
+
+function showNotifications() {
+
+    showToast(
+        "Notifications coming soon"
+    );
+
+}
+
+
+function showProfile() {
+
+    if (
+        currentPlayer &&
+        currentPlayer.first_name
+    ) {
+
+        showToast(
+            currentPlayer.first_name
+        );
+
+    } else {
+
+        showToast(
+            "Profile"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SECURITY HELPER
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   APPLICATION INITIALIZATION
+===================================================== */
+
+async function initializeApp() {
+
+    try {
+
+        setLoading(
+            "Starting SwiftFinger..."
+        );
+
+
+        /*
+         * Initialize Telegram.
+         */
+
+        initTelegram();
+
+
+        /*
+         * Authenticate only when
+         * Telegram provides initData.
+         */
+
+        if (
+            tg &&
+            tg.initData
+        ) {
+
+            const authResult =
+                await authenticateTelegram();
+
+
+            if (
+                authResult &&
+                authResult.player
+            ) {
+
+                displayPlayer(
+                    authResult.player
+                );
+
+            } else {
+
+                displayPlayer(
+
+                    telegramUser
+
+                        ? {
+
+                            first_name:
+                                telegramUser.first_name,
+
+                            telegram_username:
+                                telegramUser.username,
+
+                            rating:
+                                1000
+
+                        }
+
+                        : createDemoPlayer()
+
+                );
+
+            }
+
+        } else {
+
+            /*
+             * Normal browser / Chrome.
+             */
+
+            displayPlayer(
+
+                telegramUser
+
+                    ? {
+
+                        first_name:
+                            telegramUser.first_name,
+
+                        telegram_username:
+                            telegramUser.username,
+
+                        rating:
+                            1000
+
+                    }
+
+                    : createDemoPlayer()
+
+            );
+
+        }
+
+
+        /*
+         * Load game modes.
+         */
+
+        setLoading(
+            "Loading games..."
+        );
+
+
+        await loadGameModes();
+
+
+        /*
+         * Everything is ready.
+         */
+
+        showApp();
+
+
+    } catch (error) {
+
+        console.error(
+            "SwiftFinger startup error:",
+            error
+        );
+
+
+        /*
+         * NEVER leave the user
+         * trapped on loading screen.
+         */
+
+        displayPlayer(
+            createDemoPlayer()
+        );
+
+
+        renderModes(
+            fallbackModes
+        );
+
+
+        showApp();
+
+    }
+
+}
+
+
+/* =====================================================
+   GLOBAL JAVASCRIPT ERROR SAFETY NET
+===================================================== */
+
+window.addEventListener(
+    "error",
+    function(event) {
+
+        console.error(
+            "JavaScript error:",
+            event.error ||
+            event.message
+        );
+
+
+        const app =
+            document.getElementById(
+                "app"
+            );
+
+
+        /*
+         * If the application hasn't
+         * appeared, force it open.
+         */
+
+        if (
+            app &&
+            app.style.display !==
+            "block"
+        ) {
+
+            displayPlayer(
+                createDemoPlayer()
+            );
+
+
+            renderModes(
+                fallbackModes
+            );
+
+
+            showApp();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   PROMISE ERROR SAFETY NET
+===================================================== */
+
+window.addEventListener(
+    "unhandledrejection",
+    function(event) {
+
+        console.error(
+            "Unhandled promise error:",
+            event.reason
+        );
+
+
+        const app =
+            document.getElementById(
+                "app"
+            );
+
+
+        if (
+            app &&
+            app.style.display !==
+            "block"
+        ) {
+
+            displayPlayer(
+                createDemoPlayer()
+            );
+
+
+            renderModes(
+                fallbackModes
+            );
+
+
+            showApp();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+initializeApp();
+
+</script>
+
+</body>
+</html>
