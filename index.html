@@ -91,6 +91,7 @@ button:active{transform:scale(.98)}
 .gameChoice h3{margin-top:5px;font-size:13px}
 .gameChoice p{margin-top:3px;color:#8294af;font-size:10px;line-height:1.25}
 .matchBtn{margin-top:8px;width:100%;border:0;border-radius:8px;background:#0a8fff;color:#fff;padding:8px;font-size:11px;font-weight:900;transition:transform .18s ease,filter .18s ease}
+.matchBtn:disabled{opacity:.55;cursor:not-allowed}
 
 /* Referral */
 #referralOverlay{position:fixed;inset:0;background:rgba(0,3,15,.9);z-index:90000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -172,6 +173,7 @@ button:active{transform:scale(.98)}
             <div class="tagline">THINK FAST. PLAY SMART. WIN BIG.</div>
         </div>
     </div>
+
     <div class="playerArea">
         <img class="avatar" src="swiftfinger-logo.png" alt="">
         <div class="playerInfo">
@@ -188,32 +190,64 @@ button:active{transform:scale(.98)}
 
     <div class="adTop">
         <div class="adIcon">📣</div>
-        <div class="adText"><strong>ADVERTISEMENT</strong><small>468 × 60 Banner</small></div>
+        <div class="adText">
+            <strong>ADVERTISEMENT</strong>
+            <small>468 × 60 Banner</small>
+        </div>
     </div>
 
     <div class="heroGrid">
 
         <div class="heroCard">
             <div class="art">❓</div>
+
             <div class="cardContent">
                 <span class="badge">CHALLENGE</span>
+
                 <h2>DECODE<br>NUMBERS</h2>
-                <p class="heroDesc">Decode numbers into meaningful sentences and win <em>cash prizes!</em></p>
-                <button class="playBtn" onclick="showToast('Decode Numbers coming next')">PLAY NOW &nbsp;›</button>
-                <div class="cardStats"><span class="statLabel">🏆 DAILY PRIZE</span><strong class="statValue">$10</strong></div>
+
+                <p class="heroDesc">
+                    Decode numbers into meaningful sentences and win
+                    <em>cash prizes!</em>
+                </p>
+
+                <button class="playBtn" onclick="showToast('Decode Numbers coming next')">
+                    PLAY NOW &nbsp;›
+                </button>
+
+                <div class="cardStats">
+                    <span class="statLabel">🏆 DAILY PRIZE</span>
+                    <strong class="statValue">$10</strong>
+                </div>
             </div>
         </div>
 
         <div class="heroCard red">
             <div class="art">⚔️<br>🛡️</div>
+
             <div class="cardContent">
                 <span class="badge">COMPETE</span>
+
                 <h2>1V1<br>MATCH</h2>
-                <p class="heroDesc">Play 1V1 games in <em>5 attempts.</em> No draws, only winners!</p>
-                <button class="playBtn" onclick="open1v1()">FIND MATCH &nbsp;⚡</button>
+
+                <p class="heroDesc">
+                    Play 1V1 games in <em>5 attempts.</em>
+                    No draws, only winners!
+                </p>
+
+                <button class="playBtn" onclick="open1v1()">
+                    FIND MATCH &nbsp;⚡
+                </button>
+
                 <div class="cardStats">
-                    <span class="statLabel">⚔️ WIN STREAK <b id="winStreak">7</b></span>
-                    <span class="statLabel">🎯 WIN RATE <b id="winRate" style="color:#62ef22;font-size:20px">68%</b></span>
+                    <span class="statLabel">
+                        ⚔️ WIN STREAK <b id="winStreak">7</b>
+                    </span>
+
+                    <span class="statLabel">
+                        🎯 WIN RATE
+                        <b id="winRate" style="color:#62ef22;font-size:20px">68%</b>
+                    </span>
                 </div>
             </div>
         </div>
@@ -221,20 +255,78 @@ button:active{transform:scale(.98)}
     </div>
 
     <div class="tiles">
-        <div class="tile" onclick="showToast('Leaderboard')"><div class="tileIcon">🏆</div><h3>LEADERBOARD</h3><p>Top players this week</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Profile')"><div class="tileIcon">👤</div><h3>PROFILE</h3><p>View your stats</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Referral system')"><div class="tileIcon">👥</div><h3>REFER FRIENDS</h3><p>Invite & earn rewards</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Achievements')"><div class="tileIcon">🏅</div><h3>ACHIEVEMENTS</h3><p>Unlock & earn badges</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Statistics')"><div class="tileIcon">📊</div><h3>STATISTICS</h3><p>Track your progress</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Daily Rewards')"><div class="tileIcon">🎁</div><h3>DAILY REWARDS</h3><p>Claim your reward</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('Bonus')"><div class="tileIcon">💎</div><h3>BONUS</h3><p>Extra bonuses</p><div class="arrow">›</div></div>
-        <div class="tile" onclick="showToast('How to Play')"><div class="tileIcon">ℹ️</div><h3>HOW TO PLAY</h3><p>Learn the rules</p><div class="arrow">›</div></div>
+
+        <div class="tile" onclick="showToast('Leaderboard')">
+            <div class="tileIcon">🏆</div>
+            <h3>LEADERBOARD</h3>
+            <p>Top players this week</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Profile')">
+            <div class="tileIcon">👤</div>
+            <h3>PROFILE</h3>
+            <p>View your stats</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Referral system')">
+            <div class="tileIcon">👥</div>
+            <h3>REFER FRIENDS</h3>
+            <p>Invite & earn rewards</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Achievements')">
+            <div class="tileIcon">🏅</div>
+            <h3>ACHIEVEMENTS</h3>
+            <p>Unlock & earn badges</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Statistics')">
+            <div class="tileIcon">📊</div>
+            <h3>STATISTICS</h3>
+            <p>Track your progress</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Daily Rewards')">
+            <div class="tileIcon">🎁</div>
+            <h3>DAILY REWARDS</h3>
+            <p>Claim your reward</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('Bonus')">
+            <div class="tileIcon">💎</div>
+            <h3>BONUS</h3>
+            <p>Extra bonuses</p>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="tile" onclick="showToast('How to Play')">
+            <div class="tileIcon">ℹ️</div>
+            <h3>HOW TO PLAY</h3>
+            <p>Learn the rules</p>
+            <div class="arrow">›</div>
+        </div>
+
     </div>
 
     <div class="adBottom">
         <div class="adIcon">📣</div>
-        <div class="adText"><strong>ADVERTISE WITH US</strong><small>Your ad here</small></div>
-        <button style="margin-left:auto;margin-right:14px;padding:12px 20px;border:1px solid #9d39ff;border-radius:9px;background:#6322b7;color:#fff;font-weight:900" onclick="showToast('Advertising information')">LEARN MORE ↗</button>
+
+        <div class="adText">
+            <strong>ADVERTISE WITH US</strong>
+            <small>Your ad here</small>
+        </div>
+
+        <button
+            style="margin-left:auto;margin-right:14px;padding:12px 20px;border:1px solid #9d39ff;border-radius:9px;background:#6322b7;color:#fff;font-weight:900"
+            onclick="showToast('Advertising information')">
+            LEARN MORE ↗
+        </button>
     </div>
 
 </section>
@@ -247,34 +339,75 @@ button:active{transform:scale(.98)}
     </div>
 
     <div class="matchStats">
-        <div class="matchStat"><strong id="waitingPlayers">—</strong><span>Players Waiting</span></div>
-        <div class="matchStat"><strong id="activeMatches">—</strong><span>Active Matches</span></div>
-        <div class="matchStat"><strong id="unmatchedPlayers">—</strong><span>Unmatched</span></div>
+
+        <div class="matchStat">
+            <strong id="waitingPlayers">—</strong>
+            <span>Players Waiting</span>
+        </div>
+
+        <div class="matchStat">
+            <strong id="activeMatches">—</strong>
+            <span>Active Matches</span>
+        </div>
+
+        <div class="matchStat">
+            <strong id="unmatchedPlayers">—</strong>
+            <span>Unmatched</span>
+        </div>
+
     </div>
 
-    <p style="color:#91a3be;font-size:13px;margin-bottom:15px">Choose any game. Matchmaking is shuffled. Every completed 1V1 produces a winner and a loser.</p>
+    <p style="color:#91a3be;font-size:13px;margin-bottom:15px">
+        Choose any game. Matchmaking is shuffled.
+        Every completed 1V1 produces a winner and a loser.
+    </p>
 
     <div id="gameList" class="gameList"></div>
+
 </section>
 
 </main>
 
 <nav class="bottomNav">
-    <button class="navBtn active" id="navHome" onclick="showHome()"><span>⌂</span>HOME</button>
-    <button class="navBtn" id="navGames" onclick="open1v1()"><span>🎮</span>GAMES</button>
-    <button class="navBtn" onclick="showToast('Leaderboard')"><span>🏆</span>LEADERBOARD</button>
-    <button class="navBtn" onclick="showToast('Notifications')"><span>🔔</span>NOTIFICATIONS</button>
-    <button class="navBtn" onclick="showToast('Account')"><span>●</span>ACCOUNT</button>
+
+    <button class="navBtn active" id="navHome" onclick="showHome()">
+        <span>⌂</span>HOME
+    </button>
+
+    <button class="navBtn" id="navGames" onclick="open1v1()">
+        <span>🎮</span>GAMES
+    </button>
+
+    <button class="navBtn" onclick="showToast('Leaderboard')">
+        <span>🏆</span>LEADERBOARD
+    </button>
+
+    <button class="navBtn" onclick="showToast('Notifications')">
+        <span>🔔</span>NOTIFICATIONS
+    </button>
+
+    <button class="navBtn" onclick="showToast('Account')">
+        <span>●</span>ACCOUNT
+    </button>
+
 </nav>
 
 </div>
 
 <div id="modal" class="modal">
+
     <div class="modalBox">
+
         <h2 id="modalTitle">SwiftFinger</h2>
+
         <p id="modalText"></p>
-        <button class="closeBtn" onclick="closeModal()">CLOSE</button>
+
+        <button class="closeBtn" onclick="closeModal()">
+            CLOSE
+        </button>
+
     </div>
+
 </div>
 
 <div id="toast"></div>
@@ -282,209 +415,59 @@ button:active{transform:scale(.98)}
 <script>
 "use strict";
 
-const CONFIG={
-    supabaseUrl:"https://skceglrwxcdkyktbzmnq.supabase.co",
-    telegramAuthUrl:"https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth",
-    authTimeoutMs:10000,
-    statsRefreshMs:5000
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const CONFIG = {
+    supabaseUrl: "https://skceglrwxcdkyktbzmnq.supabase.co",
+
+    telegramAuthUrl:
+        "https://skceglrwxcdkyktbzmnq.supabase.co/functions/v1/telegram-auth",
+
+    authTimeoutMs: 10000,
+
+    statsRefreshMs: 5000,
+
+    matchmakingTimeoutMs: 10000
 };
 
-const modes=[
- ["fastest_finger","⚡","Fastest Finger","Original 5-attempt challenge."],
- ["word_sprint","🔤","Word Sprint","Fastest valid 4–6 letter word."],
- ["rock_paper_scissors","✊","Rock Paper Scissors","Choose your move quickly."],
- ["chess","♟️","Chess","Beat your opponent on the board."],
- ["maze_race","🌀","Maze Race","Race through your own hidden maze."],
- ["memory_match","🧠","Memory Match","Remember and match faster."],
- ["number_rush","🔢","Number Rush","Solve the number challenge."],
- ["spot_the_difference","🔎","Spot the Difference","Find the changed item."],
- ["target_tap","🎯","Target Tap","Hit the target first."],
- ["pattern_rush","🧩","Pattern Rush","Remember the pattern."],
- ["odd_one_out","👀","Odd One Out","Find the different item."],
- ["word_scramble","🔀","Word Scramble","Unscramble the word."],
- ["addition_numbers","➕","Addition of Numbers","Add the numbers fastest."]
+
+/* =========================================================
+   GAME MODES
+========================================================= */
+
+const modes = [
+    ["fastest_finger","⚡","Fastest Finger","Original 5-attempt challenge."],
+    ["word_sprint","🔤","Word Sprint","Fastest valid 4–6 letter word."],
+    ["rock_paper_scissors","✊","Rock Paper Scissors","Choose your move quickly."],
+    ["chess","♟️","Chess","Beat your opponent on the board."],
+    ["maze_race","🌀","Maze Race","Race through your own hidden maze."],
+    ["memory_match","🧠","Memory Match","Remember and match faster."],
+    ["number_rush","🔢","Number Rush","Solve the number challenge."],
+    ["spot_the_difference","🔎","Spot the Difference","Find the changed item."],
+    ["target_tap","🎯","Target Tap","Hit the target first."],
+    ["pattern_rush","🧩","Pattern Rush","Remember the pattern."],
+    ["odd_one_out","👀","Odd One Out","Find the different item."],
+    ["word_scramble","🔀","Word Scramble","Unscramble the word."],
+    ["addition_numbers","➕","Addition of Numbers","Add the numbers fastest."]
 ];
 
-let tg=null;
-let telegramUser=null;
-let currentPlayer=null;
-let isFirstEntry=false;
 
-function setLoading(t){const e=document.getElementById("loadingText");if(e)e.textContent=t}
-function showApp(){document.getElementById("loadingScreen").style.display="none";document.getElementById("app").style.display="block"}
-function showToast(m){const e=document.getElementById("toast");e.textContent=m;e.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>e.style.display="none",2500)}
-function openModal(t,m){document.getElementById("modalTitle").textContent=t;document.getElementById("modalText").textContent=m;document.getElementById("modal").style.display="flex"}
-function closeModal(){document.getElementById("modal").style.display="none"}
+/* =========================================================
+   TELEGRAM / PLAYER STATE
+========================================================= */
 
-function initTelegram(){
- try{
-   if(window.Telegram&&window.Telegram.WebApp){
-     tg=window.Telegram.WebApp;
-     tg.ready(); tg.expand();
-     try{tg.setHeaderColor("#030817");tg.setBackgroundColor("#030817")}catch(e){}
-     telegramUser=tg.initDataUnsafe?.user||null;
-     return true;
-   }
- }catch(e){console.error(e)}
- return false;
-}
+let tg = null;
+let telegramUser = null;
+let currentPlayer = null;
+let isFirstEntry = false;
 
-function storageKey(){return telegramUser?.id?"sf_referral_seen_"+telegramUser.id:"sf_referral_seen_guest"}
-function shouldAskReferral(){return !localStorage.getItem(storageKey())}
-function markReferralSeen(){localStorage.setItem(storageKey(),"1")}
+let matchmakingBusy = false;
 
-function showReferral(){
- document.getElementById("referralOverlay").style.display="flex";
- setTimeout(()=>document.getElementById("referralInput").focus(),100);
-}
 
-function submitReferral(skip=false){
- const input=document.getElementById("referralInput");
- const error=document.getElementById("referralError");
- let code=skip?"":input.value.trim().toUpperCase();
+/* =========================================================
+   BASIC UI
+========================================================= */
 
- if(code && !/^SF\d{3,}$/.test(code)){
-   error.textContent="Enter a valid player ID such as SF001.";
-   return;
- }
- error.textContent="";
- localStorage.setItem("sf_pending_referral",code);
- markReferralSeen();
- document.getElementById("referralOverlay").style.display="none";
- authenticateAndContinue(code);
-}
-
-async function fetchWithTimeout(url,options={},timeout=10000){
- const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),timeout);
- try{return await fetch(url,{...options,signal:controller.signal})}
- finally{clearTimeout(timer)}
-}
-
-async function authenticateAndContinue(referralCode){
- setLoading("Authenticating...");
- if(!tg||!tg.initData){
-   displayPlayer({id:null,rating:1250,first_name:"Guest",telegram_username:"Guest"});
-   await loadModes();
-   showApp();
-   return;
- }
- try{
-   const response=await fetchWithTimeout(CONFIG.telegramAuthUrl,{
-     method:"POST",
-     headers:{"Content-Type":"application/json"},
-     body:JSON.stringify({initData:tg.initData,referralCode:referralCode||null})
-   },CONFIG.authTimeoutMs);
-
-   const data=await response.json().catch(()=>({}));
-   if(!response.ok||!data.success) throw new Error(data.error||"Authentication failed");
-   if(data.player) displayPlayer(data.player);
-   else displayPlayer({id:null,rating:1000});
- }catch(e){
-   console.error("Telegram authentication:",e);
-   displayPlayer({id:null,rating:1000,first_name:telegramUser?.first_name||"Telegram Player"});
-   showToast(e.name==="AbortError"?"Authentication timed out. Basic mode loaded.":"Authentication unavailable. Basic mode loaded.");
- }
- await loadModes();
- showApp();
-}
-
-function displayPlayer(p){
- currentPlayer=p||{};
- const id=document.getElementById("playerId");
- const score=document.getElementById("playerScore");
- if(id){
-   id.innerHTML=p?.id?`SF${String(p.id).padStart(3,"0")} <span class="verified">●</span>`:"GUEST";
- }
- if(score) score.textContent="★ "+(p?.rating||1250);
- const wins=Number(p?.wins||0),losses=Number(p?.losses||0);
- const total=wins+losses;
- document.getElementById("winStreak").textContent=p?.win_streak??wins??0;
- document.getElementById("winRate").textContent=total?Math.round(wins/total*100)+"%":"0%";
-}
-
-function renderModes(){
- const list=document.getElementById("gameList");
- list.innerHTML="";
- modes.forEach(m=>{
-   const d=document.createElement("div");
-   d.className="gameChoice";
-   d.innerHTML=`<div class="gameIcon">${m[1]}</div><h3>${m[2]}</h3><p>${m[3]}</p><button class="matchBtn">FIND MATCH</button>`;
-   d.onclick=()=>findMatch(m[0],m[2]);
-   d.querySelector("button").onclick=e=>{e.stopPropagation();findMatch(m[0],m[2])};
-   list.appendChild(d);
- });
-}
-
-async function loadModes(){renderModes()}
-
-async function refreshMatchStats(){
- try{
-   const response=await fetchWithTimeout(CONFIG.supabaseUrl+"/rest/v1/rpc/get_matchmaking_stats",{
-     method:"POST",headers:{"Content-Type":"application/json"},body:"{}"
-   },5000);
-   if(!response.ok)throw new Error("stats rpc unavailable");
-   const data=await response.json();
-   const s=Array.isArray(data)?data[0]:data;
-   if(s){
-     document.getElementById("waitingPlayers").textContent=s.waiting_players??0;
-     document.getElementById("activeMatches").textContent=s.active_matches??0;
-     document.getElementById("unmatchedPlayers").textContent=s.unmatched_players??0;
-     return;
-   }
- }catch(e){}
- document.getElementById("waitingPlayers").textContent="—";
- document.getElementById("activeMatches").textContent="—";
- document.getElementById("unmatchedPlayers").textContent="—";
-}
-
-function open1v1(){
- document.getElementById("homeScreen").classList.remove("active");
- document.getElementById("oneVsOneScreen").classList.add("active");
- document.getElementById("navHome").classList.remove("active");
- document.getElementById("navGames").classList.add("active");
- refreshMatchStats();
- clearInterval(window.statsTimer);
- window.statsTimer=setInterval(refreshMatchStats,CONFIG.statsRefreshMs);
-}
-
-function showHome(){
- document.getElementById("oneVsOneScreen").classList.remove("active");
- document.getElementById("homeScreen").classList.add("active");
- document.getElementById("navGames").classList.remove("active");
- document.getElementById("navHome").classList.add("active");
- clearInterval(window.statsTimer);
-}
-
-function findMatch(key,name){
- openModal(name,"Matchmaking will place you against an available player. The selected game uses SwiftFinger's 1V1 rules: no draws, winner and loser only.");
-}
-
-async function initialize(){
- try{
-   initTelegram();
-   renderModes();
-
-   const pending=localStorage.getItem("sf_pending_referral")||"";
-   if(shouldAskReferral()){
-     showApp();
-     showReferral();
-     return;
-   }
-
-   await authenticateAndContinue(pending);
- }catch(e){
-   console.error(e);
-   displayPlayer({id:null,rating:1250});
-   renderModes();
-   showApp();
- }
-}
-
-window.addEventListener("error",e=>console.error("SwiftFinger error:",e.error||e.message));
-window.addEventListener("unhandledrejection",e=>console.error("SwiftFinger promise:",e.reason));
-
-initialize();
-</script>
-</body>
-</html>
+function setLoading(
